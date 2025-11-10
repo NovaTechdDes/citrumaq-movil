@@ -24,14 +24,14 @@ export default function HomeScreen() {
 
         <Pressable onPress={handleModal} className='flex gap-2 flex-row bg-black rounded-lg px-2 py-1 items-center'>
           {!modalAbierto && <Ionicons name='add-outline' size={20} color='white' />}
-          <Text className='text-white text-xl'>{modalAbierto ? 'Cerrar' : 'Agregar'}</Text>
+          <Text className='text-white  text-xl'>{modalAbierto ? 'Cerrar' : 'Agregar'}</Text>
         </Pressable>
       </View>
 
       {modalAbierto && <FormularioCliente />}
 
       <View className='mt-2 border rounded-lg border-slate-500'>
-        <TextInput placeholder='Buscar el cliente por nombre, telefono' onChangeText={(e) => setBuscador(e.toUpperCase())} />
+        <TextInput className='placeholder:text-gray-400' placeholder='Buscar el cliente por nombre, telefono' onChangeText={(e) => setBuscador(e.toUpperCase())} />
       </View>
 
       <ScrollView className='gap-5 mt-5' showsVerticalScrollIndicator={false} contentContainerClassName='pb-32'>

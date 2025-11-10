@@ -78,7 +78,7 @@ const FormularioMaquina = () => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
-                                    className='border border-gray-500 rounded-lg text-xl pl-5'
+                                    className='border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400'
                                     value={value}
                                     onChangeText={onChange}
                                     placeholder='Descripcion de la maquina'
@@ -93,7 +93,7 @@ const FormularioMaquina = () => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
-                                    className='border border-gray-500 rounded-lg text-xl pl-5'
+                                    className='border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400'
                                     value={value}
                                     onChangeText={onChange}
                                     placeholder='Marca'
@@ -109,7 +109,7 @@ const FormularioMaquina = () => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
-                                    className='border border-gray-500 rounded-lg text-xl pl-5'
+                                    className='border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400'
                                     placeholder='Modelo'
                                     value={value}
                                     onChangeText={onChange}
@@ -125,7 +125,7 @@ const FormularioMaquina = () => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
-                                    className='border border-gray-500 rounded-lg text-xl pl-5'
+                                    className='border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400'
                                     placeholder='2025'
                                     value={value ? String(value) : ''}
                                     onChangeText={text => {
@@ -146,7 +146,7 @@ const FormularioMaquina = () => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
-                                    className='border border-gray-500 rounded-lg text-xl pl-5'
+                                    className='border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400'
                                     placeholder='Industria'
                                     value={value}
                                     onChangeText={onChange}
@@ -162,7 +162,7 @@ const FormularioMaquina = () => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
-                                    className='border border-gray-500 rounded-lg text-xl pl-5'
+                                    className='border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400'
                                     placeholder=''
                                     value={value}
                                     onChangeText={onChange}
@@ -173,7 +173,7 @@ const FormularioMaquina = () => {
                     </View>
 
 
-                    <View className='flex-row justify-center gap-5 w-full'>
+                    <View className='flex-row justify-center gap-5 w-full mb-5'>
                         {maquinaSeleccionada ? (
                             <Pressable onPress={handleSubmit(handleUpdateMaquina)} disabled={isPendingModificar} className='border border-gray-300 px-5 bg-black py-2 rounded-lg'>
                                 <Text className='text-xl font-semibold text-white'>{isPendingModificar ? 'Modificando...' : 'Modificar Maquina'}</Text>
@@ -209,7 +209,8 @@ export const pickerStyles = {
         marginBottom: 12,
     },
     item: {
-        color: '#333',
+        color: '#white',
+        backgroundColor: '#fff',
     },
     placeholder: {
         color: '#aaa',

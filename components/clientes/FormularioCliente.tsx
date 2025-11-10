@@ -54,7 +54,7 @@ const FormularioCliente = () => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
-                                    className='border border-gray-500 rounded-lg text-xl pl-5'
+                                    className='border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400'
                                     value={value}
                                     onChangeText={onChange}
                                     placeholder='Nombre del cliente'
@@ -69,7 +69,7 @@ const FormularioCliente = () => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
-                                    className='border border-gray-500 rounded-lg text-xl pl-5'
+                                    className='border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400'
                                     value={value}
                                     onChangeText={onChange}
                                     placeholder='00000000'
@@ -85,7 +85,7 @@ const FormularioCliente = () => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
-                                    className='border border-gray-500 rounded-lg text-xl pl-5'
+                                    className='border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400'
                                     placeholder='Av Siempre Viva 123'
                                     value={value}
                                     onChangeText={onChange}
@@ -101,7 +101,7 @@ const FormularioCliente = () => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
-                                    className='border border-gray-500 rounded-lg text-xl pl-5'
+                                    className='border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400'
                                     placeholder='+3456445089'
                                     value={value}
                                     onChangeText={onChange}

@@ -63,11 +63,17 @@ export const startPutMaquina = async (maquina: Partial<Maquina>): Promise<boolea
 export const startDeleteMaquina = async (id: number): Promise<boolean> => {
     const conexion = await db();
 
-    const res = await conexion.runAsync('DELETE FROM maquinas WHERE id = $id', { $id: id });
-
-    if (res) {
-        return true;
-    } else {
-        return false
+    try {
+        const res = await conexion.runAsync('DELETE FROM maquinas WHERE id = $id', { $id: id });
+        // res.changes indica la cantidad de filas afectadas por la sentencia
+        if (res?.changes && res.changes > 0) {
+            return true;
+        } else {
+            // No se eliminó ninguna fila (posiblemente id no existe)
+            return false;
+        }
+    } catch (error) {
+        console.error("Error eliminando la máquina:", error);
+        return false;
     }
 };

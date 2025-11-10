@@ -4,7 +4,7 @@
     "slug": "citrumaq-movil",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/Maquina.webp",
+    "icon": "./assets/images/Maquina.jpg",
     "scheme": "citrumaqmovil",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,12 +14,13 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/Maquina.webp",
-        "backgroundImage": "./assets/images/Maquina.webp",
-        "monochromeImage": "./assets/images/Maquina.webp"
+        "foregroundImage": "./assets/images/Maquina.jpg",
+        "backgroundImage": "./assets/images/Maquina.jpg",
+        "monochromeImage": "./assets/images/Maquina.jpg"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.pelusaaal.citrumaqmovil"
     },
     "web": {
       "output": "static",
@@ -44,6 +45,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ba7847c8-ed9e-46ab-a328-45e31d7bee99"
+      }
     }
   }
 }

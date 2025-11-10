@@ -19,6 +19,7 @@ const queryClient = new QueryClient();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
+
   useEffect(() => {
     setupDatabase();
   }, [])
@@ -27,12 +28,12 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider value={DefaultTheme}>
-          <SafeAreaView style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'right', 'left']}>
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             </Stack>
+            <StatusBar style='inverted' />
           </SafeAreaView>
-          <StatusBar style='inverted' />
         </ThemeProvider>
       </QueryClientProvider>
     </SafeAreaProvider>

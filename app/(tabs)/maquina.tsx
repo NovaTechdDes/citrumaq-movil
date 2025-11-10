@@ -34,15 +34,16 @@ export default function Maquina() {
       {modalAbierto && <FormularioMaquina />}
 
       <View className='my-3'>
-        <TextInput onChangeText={(e) => setBuscador(e.toUpperCase())} className='border border-gray-300 rounded-lg px-2 py-2 text-lg' placeholder='Buscar por maquina o cliente' />
+        <TextInput onChangeText={(e) => setBuscador(e.toUpperCase())} className='border placeholder:text-gray-500 border-gray-300 rounded-lg px-2 py-2 text-lg' placeholder='Buscar por maquina o cliente' />
       </View>
 
       <FlatList
         data={maquinas}
         keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
         renderItem={({ item }) => <MaquinaCard maquina={item} />}
-
+        contentContainerStyle={{ paddingBottom: 90 }}
       />
+
     </View>
   );
 }

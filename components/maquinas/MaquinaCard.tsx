@@ -24,13 +24,19 @@ const MaquinaCard = ({ maquina }: Props) => {
     };
 
     const handleDelete = () => {
-        if (!maquina) return;
+
         Alert.alert(
             'Eliminar',
             `Quiere eliminar la maquina ${maquina.descripcion} del cliente ${maquina.cliente}`,
             [
                 { text: 'Cancelar', 'style': 'cancel' },
-                { text: 'Eliminar', 'style': 'destructive', onPress: () => eliminar(maquina.id!) }
+                {
+                    text: 'Eliminar', 'style': 'destructive', onPress: async () => {
+
+                        const retorno = await eliminar(maquina.id!)
+
+                    }
+                }
             ]
         )
     };
