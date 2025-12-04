@@ -10,8 +10,17 @@ const getServerUrl = async () => {
 
 export const probarConexion = async () => {
   const url = await getServerUrl();
-  const { data } = await axios.get(`${url}citrumaq`);
-  return data;
+
+  try {
+    const { data } = await axios.get(`${url}citrumaq`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    return {
+      ok: false,
+      msg: "Error al probar la conexion",
+    };
+  }
 };
 
 export const enviarDatos = async () => {

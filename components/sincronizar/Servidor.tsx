@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 
-import { useConexion } from "@/hooks/conexion/useConexion";
+import { probarConexion } from "@/core/actions/conexion.actions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface URL {
@@ -28,7 +28,6 @@ const Servidor = () => {
   const { control, handleSubmit, setValue } = useForm<URL>({
     defaultValues: initialState,
   });
-  const { data } = useConexion();
   const [loading, setLoading] = useState(false);
   const [conexion, setConexion] = useState<boolean>(false);
   const [bandera, setBandera] = useState<boolean>(false);
@@ -44,14 +43,15 @@ const Servidor = () => {
     })();
   }, [setValue]);
 
-  const probarConexion = () => {
-    setBandera(true);
+  const handleConexion = async () => {
+    const { ok } = await probarConexion();
 
-    if (data?.ok) {
+    if (ok) {
       setConexion(true);
     } else {
       setConexion(false);
     }
+    setBandera(true);
 
     setTimeout(() => {
       setBandera(false);
@@ -113,7 +113,7 @@ const Servidor = () => {
       </Pressable>
 
       <Pressable
-        onPress={probarConexion}
+        onPress={handleConexion}
         className="bg-green-800 rounded-lg mt-5 py-2"
       >
         <Text className="text-white text-center text-xl">Probar conexion</Text>
