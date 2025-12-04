@@ -2,6 +2,7 @@ import { db } from "@/database/db";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { Cliente } from "../interface/Cliente";
+import { Maquina } from "../interface/Maquina";
 
 const getServerUrl = async () => {
   return await AsyncStorage.getItem("@server_url");
@@ -13,19 +14,23 @@ export const probarConexion = async () => {
   return data;
 };
 
-export const enviarClientes = async () => {
+export const enviarDatos = async () => {
   const url = await getServerUrl();
   const conexion = await db();
 
-  const filas = (await conexion.getAllAsync(
+  const filasClientes = (await conexion.getAllAsync(
     "SELECT * FROM clientes"
   )) as Cliente[];
 
-  console.log(filas);
+  const filasMaquinas = (await conexion.getAllAsync(
+    "SELECT * FROM maquinas"
+  )) as Maquina[];
 
-  const { data } = await axios.post(
-    `${url}citrumaq/clientes/variosClientes`,
-    filas
-  );
-  console.log(data);
+  const datos = {
+    clientes: filasClientes,
+    maquinas: filasMaquinas,
+  };
+
+  const { data } = await axios.post(`${url}citrumaq/sincronizacion`, datos);
+  return data;
 };

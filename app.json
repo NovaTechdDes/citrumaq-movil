@@ -2,21 +2,27 @@
   "expo": {
     "name": "CitrumaQ",
     "slug": "citrumaq-movil",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
-    "icon": "./assets/images/Maquina.jpg",
+    "icon": "./assets/images/Maquina.png",
     "scheme": "citrumaqmovil",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "buildNumber": "1",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pelusaaal.citrumaqmovil",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/Maquina.jpg",
-        "backgroundImage": "./assets/images/Maquina.jpg",
-        "monochromeImage": "./assets/images/Maquina.jpg"
+        "foregroundImage": "./assets/images/Maquina.png",
+        "backgroundImage": "./assets/images/Maquina.png",
+        "monochromeImage": "./assets/images/Maquina.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,

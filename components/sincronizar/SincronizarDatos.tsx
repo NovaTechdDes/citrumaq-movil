@@ -1,11 +1,17 @@
-import { enviarClientes } from "@/core/actions/conexion.actions";
+import { enviarDatos } from "@/core/actions/conexion.actions";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Alert, Pressable, Text, View } from "react-native";
 
 const SincronizarDatos = () => {
-  const handlePress = () => {
-    enviarClientes();
+  const handlePress = async () => {
+    const { ok, msg } = await enviarDatos();
+
+    if (ok) {
+      Alert.alert(msg);
+    } else {
+      Alert.alert("Error", msg);
+    }
   };
 
   return (
