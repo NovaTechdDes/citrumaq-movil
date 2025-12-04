@@ -6,7 +6,7 @@ import { Text, View } from "react-native";
 
 const Sincronizar = () => {
   return (
-    <View>
+    <View className="mt-10 mx-2">
       <Text className="text-3xl font-bold mx-2 mt-1">
         Sincronizar e Importar
       </Text>

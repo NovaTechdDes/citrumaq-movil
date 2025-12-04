@@ -1,46 +1,48 @@
 import ClienteCard from "@/components/clientes/ClienteCard";
 import FormularioCliente from "@/components/clientes/FormularioCliente";
+import Header from "@/components/clientes/Header";
+
 import { useClientes } from "@/hooks";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useClienteStore } from "@/presentation/store/useClienteStore";
-import { Ionicons } from "@expo/vector-icons";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { ScrollView, Text, TextInput, View } from "react-native";
 
 export default function HomeScreen() {
-  const { data: clientes, isLoading } = useClientes();
-  const { openModal, closeModal, modalAbierto, setBuscador } =
-    useClienteStore();
+  const colorScheme = useColorScheme();
 
-  const handleModal = () => {
-    if (modalAbierto) {
-      closeModal();
-    } else {
-      openModal();
-    }
-  };
+  const { data: clientes } = useClientes();
+  const { modalAbierto, setBuscador } = useClienteStore();
+
+  if (clientes?.length === 0) {
+    return (
+      <View
+        className={`px-2 rounded-lg py-10 h-screen ${colorScheme === "dark" ? "bg-black" : "bg-white"}`}
+      >
+        <Header />
+
+        {modalAbierto && <FormularioCliente />}
+        <View
+          className={`border my-2 border-gray-500 rounded-lg py-2 ${colorScheme === "dark" ? "bg-slate-700" : "bg-white"}`}
+        >
+          <Text
+            className={`p-2 text-center text-xl ${colorScheme === "dark" ? "text-white" : "text-slate-600"}`}
+          >
+            No hay clientes registrados. ¡Agrega uno para comenzar!
+          </Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
-    <View className="mx-2 mt-10">
-      <View className="flex-row justify-between items-center">
-        <Text className="text-2xl font-semibold">Mis ClientesSSS</Text>
-
-        <Pressable
-          onPress={handleModal}
-          className="flex gap-2 flex-row bg-black rounded-lg px-2 py-1 items-center"
-        >
-          {!modalAbierto && (
-            <Ionicons name="add-outline" size={20} color="white" />
-          )}
-          <Text className="text-white  text-xl">
-            {modalAbierto ? "Cerrar" : "Agregar"}
-          </Text>
-        </Pressable>
-      </View>
+    <View className="px-2 py-10 dark:bg-black h-screen rounded-lg">
+      <Header />
 
       {modalAbierto && <FormularioCliente />}
 
       <View className="mt-2 border rounded-lg border-slate-500">
         <TextInput
-          className="placeholder:text-gray-400"
+          className="placeholder:text-gray-400 dark:text-white"
           placeholder="Buscar el cliente por nombre, telefono"
           onChangeText={(e) => setBuscador(e.toUpperCase())}
         />

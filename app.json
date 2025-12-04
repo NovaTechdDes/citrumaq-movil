@@ -2,12 +2,13 @@
   "expo": {
     "name": "CitrumaQ",
     "slug": "citrumaq-movil",
-    "version": "1.1.0",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/Maquina.png",
     "scheme": "citrumaqmovil",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    
     "ios": {
       "buildNumber": "1",
       "supportsTablet": true,
@@ -34,6 +35,14 @@
     },
     "plugins": [
       "expo-router",
+      [
+      "expo-build-properties",
+      {
+        "android": {
+          "usesCleartextTraffic": true
+        }
+      }
+    ],
       [
         "expo-splash-screen",
         {

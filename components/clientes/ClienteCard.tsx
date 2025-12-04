@@ -1,8 +1,8 @@
 import { Cliente } from "@/core/interface/Cliente";
 import { useMutateClientes } from "@/hooks";
+import { useColorScheme } from "@/hooks/use-color-scheme.web";
 import { useClienteStore } from "@/presentation/store/useClienteStore";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
 import { Alert, Pressable, Text, View } from "react-native";
 
 interface Props {
@@ -10,6 +10,8 @@ interface Props {
 }
 
 const ClienteCard = ({ cliente }: Props) => {
+  const colorScheme = useColorScheme();
+
   const { denominacion, documento, domicilio, telefono, observacion_cliente } =
     cliente;
   const { openModal, buscador } = useClienteStore();
@@ -44,34 +46,65 @@ const ClienteCard = ({ cliente }: Props) => {
   };
 
   return (
-    <View className="border my-2 border-gray-500 rounded-lg py-2">
+    <View
+      className={`border my-2 border-gray-500 rounded-lg py-2 ${colorScheme === "dark" ? "bg-slate-800" : "bg-white"}`}
+    >
       <View className="gap-3 px-5 py-5">
-        <View className="flex-row justify-between">
-          <View className="flex-row items-center gap-2">
-            <Ionicons
-              name="person-outline"
-              size={20}
-              className="rounded-full p-2  bg-gray-300"
-            />
-            <Text className="text-black font-semibold text-xl">
+        <View className="flex-col justify-center items-center">
+          <View className="flex-row w-full p-3 items-center gap-2">
+            <Text className="text-blue-500 dark:bg-slate-700 p-2 rounded-lg">
+              <Ionicons name="person-outline" size={20} />
+            </Text>
+
+            <Text
+              className={`text-black font-semibold text-xl ${colorScheme === "dark" ? "text-white" : "text-black"}`}
+            >
               {denominacion}
             </Text>
           </View>
-          <View className="flex flex-row gap-2">
-            <Ionicons name="albums-outline" size={20} />
-            <Text className="text-slate-600 text-lg">{documento}</Text>
+
+          <View className="flex w-full dark:bg-slate-700 p-3 rounded-lg">
+            <View className="flex-row gap-2 items-center">
+              <Text className="dark:text-blue-500">
+                <Ionicons name="albums-outline" size={20} />
+              </Text>
+              <Text className="dark:text-slate-300">Documento</Text>
+            </View>
+            <Text
+              className={`text-slate-600 text-xl font-semibold dark:text-white`}
+            >
+              {documento}
+            </Text>
           </View>
         </View>
 
-        <View className="flex-row justify-between">
-          <View className="flex flex-row gap-2 items-center">
-            <Ionicons name="phone-portrait-outline" size={20} />
-            <Text className="text-slate-600 text-lg">{telefono}</Text>
+        <View className="flex-row justify-center gap-5">
+          <View className="gap-2 dark:bg-slate-700 w-[45%] p-2 rounded-lg">
+            <View className="flex-row gap-2 items-center">
+              <Text className="dark:text-blue-500">
+                <Ionicons name="phone-portrait-outline" size={20} />
+              </Text>
+              <Text className="dark:text-slate-300">Teléfono</Text>
+            </View>
+            <Text
+              className={`text-slate-600 text-xl font-semibold dark:text-white`}
+            >
+              {telefono}
+            </Text>
           </View>
 
-          <View className="flex flex-row gap-2">
-            <Ionicons name="home-outline" size={20} />
-            <Text className="text-slate-600 text-lg">{domicilio}</Text>
+          <View className="gap-2 dark:bg-slate-700 w-[45%] p-2 rounded-lg">
+            <View className="flex-row gap-2 items-center">
+              <Text className="dark:text-blue-500">
+                <Ionicons name="home-outline" size={20} />
+              </Text>
+              <Text className="dark:text-slate-300">Domicilio</Text>
+            </View>
+            <Text
+              className={`text-slate-600 text-xl font-semibold dark:text-white`}
+            >
+              {domicilio}
+            </Text>
           </View>
         </View>
 
@@ -84,13 +117,17 @@ const ClienteCard = ({ cliente }: Props) => {
           </View>
         )}
 
-        <View className="gap-16 flex-row w-full mt-5 justify-center">
+        <View className="gap-16 flex-row w-full mt-5 border-t border-gray-500 pt-5 px-5 justify-center">
           <Pressable
             onPress={handlePut}
             className="border w-[45%] justify-center border-gray-500 p-2 rounded-lg flex-row"
           >
-            <Ionicons name="create-outline" size={20} />
-            <Text>Editar</Text>
+            <Ionicons
+              name="create-outline"
+              size={20}
+              color={colorScheme === "dark" ? "white" : "black"}
+            />
+            <Text className="dark:text-white">Editar</Text>
           </Pressable>
 
           {isPending ? (
@@ -100,10 +137,12 @@ const ClienteCard = ({ cliente }: Props) => {
           ) : (
             <Pressable
               onPress={handleDelete}
-              className="border w-[45%] justify-center border-red-500 bg-red-500 p-2 gap-5 rounded-lg flex-row"
+              className="w-[45%] justify-center  bg-red-500 p-2 gap-5 rounded-lg flex-row dark:bg-slate-700  "
             >
-              <Ionicons name="trash-outline" size={20} color="white" />
-              <Text className="text-white">Eliminar</Text>
+              <Text className="dark:text-red-500 text-white">
+                <Ionicons name="trash-outline" size={20} />
+              </Text>
+              <Text className="text-white dark:text-red-500">Eliminar</Text>
             </Pressable>
           )}
         </View>
