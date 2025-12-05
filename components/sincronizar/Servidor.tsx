@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Alert,
@@ -65,7 +65,7 @@ const Servidor = () => {
       await AsyncStorage.setItem(STORAGE_KEY, data.url);
       Alert.alert("Guardado", "La url fue guardada correctamente");
     } catch (error) {
-      console.log(error);
+      console.error(error);
       Alert.alert("Error", "No se pudo guardar la URL.");
     } finally {
       setLoading(false);

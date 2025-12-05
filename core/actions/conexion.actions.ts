@@ -15,7 +15,7 @@ export const probarConexion = async () => {
     const { data } = await axios.get(`${url}citrumaq`);
     return data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       ok: false,
       msg: "Error al probar la conexion",
@@ -39,7 +39,14 @@ export const enviarDatos = async () => {
     clientes: filasClientes,
     maquinas: filasMaquinas,
   };
-
-  const { data } = await axios.post(`${url}citrumaq/sincronizacion`, datos);
-  return data;
+  try {
+    const { data } = await axios.post(`${url}citrumaq/sincronizacion`, datos);
+    return data;
+  } catch (error) {
+    console.error(error);
+    return {
+      ok: false,
+      msg: "Error al enviar los datos",
+    };
+  }
 };

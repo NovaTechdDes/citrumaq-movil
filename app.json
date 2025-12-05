@@ -8,7 +8,6 @@
     "scheme": "citrumaqmovil",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    
     "ios": {
       "buildNumber": "1",
       "supportsTablet": true,
@@ -36,13 +35,13 @@
     "plugins": [
       "expo-router",
       [
-      "expo-build-properties",
-      {
-        "android": {
-          "usesCleartextTraffic": true
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
         }
-      }
-    ],
+      ],
       [
         "expo-splash-screen",
         {
@@ -55,7 +54,8 @@
           }
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

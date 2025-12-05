@@ -1,9 +1,9 @@
 import FormularioMaquina from "@/components/maquinas/FormularioMaquina";
+import Header from "@/components/maquinas/Header";
 import MaquinaCard from "@/components/maquinas/MaquinaCard";
 import { useMaquinas } from "@/hooks";
 import { useMaquinaStore } from "@/presentation/store/useMaquinaStore";
-import { Ionicons } from "@expo/vector-icons";
-import { FlatList, Pressable, Text, TextInput, View } from "react-native";
+import { FlatList, Text, TextInput, View } from "react-native";
 
 export default function Maquina() {
   const { data: maquinas } = useMaquinas();
@@ -19,30 +19,31 @@ export default function Maquina() {
     }
   };
 
-  return (
-    <View className="mx-2 mt-10">
-      <View className="flex-row justify-between items-center">
-        <Text className="text-2xl font-semibold">Maquinas</Text>
+  if (maquinas?.length === 0) {
+    return (
+      <View className="px-2 rounded-lg py-10 h-screen">
+        <Header />
 
-        <Pressable
-          onPress={handleModal}
-          className="flex gap-2 flex-row bg-black rounded-lg px-2 py-1 items-center"
-        >
-          {!modalAbierto && (
-            <Ionicons name="add-outline" size={20} color="white" />
-          )}
-          <Text className="text-white text-xl">
-            {modalAbierto ? "Cerrar" : "Agregar"}
+        {modalAbierto && <FormularioMaquina />}
+        <View className="border my-2 border-gray-500 rounded-lg py-2 dark:bg-slate-700">
+          <Text className="p-2 text-center text-xl dark:text-slate-600">
+            No hay maquinas registradas. ¡Agrega una para comenzar!
           </Text>
-        </Pressable>
+        </View>
       </View>
+    );
+  }
+
+  return (
+    <View className="px-2 pt-10 dark:bg-black h-screen rounded-lg">
+      <Header />
 
       {modalAbierto && <FormularioMaquina />}
 
       <View className="my-3">
         <TextInput
           onChangeText={(e) => setBuscador(e.toUpperCase())}
-          className="border placeholder:text-gray-500 border-gray-300 rounded-lg px-2 py-2 text-lg"
+          className="border placeholder:text-gray-500 border-gray-300 rounded-lg px-2 py-2 text-lg dark:border-gray-70 dark:text-white"
           placeholder="Buscar por maquina o cliente"
         />
       </View>

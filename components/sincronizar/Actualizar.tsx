@@ -1,13 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as Updates from "expo-updates";
-import React from "react";
 import { Alert, Pressable, Text, View } from "react-native";
 
 const Actualizar = () => {
   const handleActualizar = async () => {
     try {
       const update = await Updates.checkForUpdateAsync();
-      console.log(update);
 
       if (update.isAvailable) {
         Alert.alert(
