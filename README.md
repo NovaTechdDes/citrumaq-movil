@@ -14,4 +14,4 @@
 ## Actualiazacion
 
 1.  eas update:configure
-2.  eas update --brach preview --platform android
+2.  eas update --channel preview --platform android

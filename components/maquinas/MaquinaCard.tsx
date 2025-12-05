@@ -50,7 +50,7 @@ const MaquinaCard = ({ maquina }: Props) => {
   };
 
   return (
-    <View className="border my-2 border-gray-500 rounded-lg py-2">
+    <View className="border my-2 border-gray-500 rounded-lg py-2 dark:bg-slate-700">
       <View className="gap-3 px-5">
         <View className="flex-row justify-between items-center">
           <Text className="text-black font-semibold text-xl dark:text-white">
@@ -63,7 +63,7 @@ const MaquinaCard = ({ maquina }: Props) => {
         </View>
 
         <View className="flex flex-row justify-between gap-10">
-          <View className="flex flex-row gap-2 items-center w-[45%] dark:bg-slate-700  rounded-lg px-2">
+          <View className="flex flex-row gap-2 items-center w-[45%] dark:bg-slate-600  rounded-lg px-2">
             <Text className="dark:text-orange-500">
               <Ionicons name="cube-outline" size={20} />
             </Text>
@@ -77,7 +77,7 @@ const MaquinaCard = ({ maquina }: Props) => {
             </View>
           </View>
 
-          <View className="flex flex-row gap-2 w-[45%] items-center  dark:bg-slate-700  rounded-lg px-2 ">
+          <View className="flex flex-row gap-2 w-[45%] items-center  dark:bg-slate-600  rounded-lg px-2 ">
             <Text className="dark:text-orange-500">
               <Ionicons name="folder-outline" size={20} />
             </Text>
@@ -93,7 +93,7 @@ const MaquinaCard = ({ maquina }: Props) => {
         </View>
 
         <View className="flex flex-row justify-between gap-10">
-          <View className="flex flex-row gap-2 items-center w-[45%] dark:bg-slate-700  rounded-lg px-2">
+          <View className="flex flex-row gap-2 items-center w-[45%] dark:bg-slate-600  rounded-lg px-2">
             <Text className="dark:text-orange-500">
               <Ionicons name="calendar-clear-outline" size={20} />
             </Text>
@@ -106,7 +106,7 @@ const MaquinaCard = ({ maquina }: Props) => {
             </View>
           </View>
 
-          <View className="flex flex-row gap-2 items-center w-[45%] dark:bg-slate-700  rounded-lg px-2">
+          <View className="flex flex-row gap-2 items-center w-[45%] dark:bg-slate-600  rounded-lg px-2">
             <Text className="dark:text-orange-500">
               <Ionicons name="storefront-outline" size={20} />
             </Text>
@@ -123,7 +123,7 @@ const MaquinaCard = ({ maquina }: Props) => {
         </View>
 
         {observacion_maquina !== "" && (
-          <View className="border-l border-orange-400 pl-2 dark:bg-slate-700 rounded-lg p-2">
+          <View className="border-l border-orange-400 pl-2 dark:bg-slate-600 rounded-lg p-2">
             <Text className="font-bold text-orange-600 text-xl dark:text-orange-600">
               Observacion
             </Text>
@@ -136,7 +136,7 @@ const MaquinaCard = ({ maquina }: Props) => {
         <View className="gap-16 flex-row  justify-center w-full mt-5">
           <Pressable
             onPress={handlePut}
-            className="border border-gray-500 w-[45%] justify-center gap-2 p-2 rounded-lg flex-row"
+            className="border border-gray-500 w-[45%] justify-center gap-2 p-2 rounded-lg flex-row dark:bg-black"
           >
             <Text className="dark:text-white">
               <Ionicons name="create-outline" size={20} />
@@ -151,7 +151,7 @@ const MaquinaCard = ({ maquina }: Props) => {
           ) : (
             <Pressable
               onPress={handleDelete}
-              className="border w-[45%] justify-center gap-2 border-red-500 bg-red-500 p-2 rounded-lg flex-row dark:bg-black"
+              className="border w-[45%] justify-center gap-2 border-red-500 bg-red-500 p-2 rounded-lg flex-row dark:bg-slate-800"
             >
               <Text className="dark:text-red-500">
                 <Ionicons name="trash-outline" size={20} />

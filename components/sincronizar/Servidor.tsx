@@ -29,6 +29,7 @@ const Servidor = () => {
     defaultValues: initialState,
   });
   const [loading, setLoading] = useState(false);
+  const [loadingConexion, setLoadingConexion] = useState(false);
   const [conexion, setConexion] = useState<boolean>(false);
   const [bandera, setBandera] = useState<boolean>(false);
 
@@ -44,6 +45,7 @@ const Servidor = () => {
   }, [setValue]);
 
   const handleConexion = async () => {
+    setLoadingConexion(true);
     const { ok } = await probarConexion();
 
     if (ok) {
@@ -52,6 +54,7 @@ const Servidor = () => {
       setConexion(false);
     }
     setBandera(true);
+    setLoadingConexion(false);
 
     setTimeout(() => {
       setBandera(false);
@@ -75,9 +78,9 @@ const Servidor = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.select({ ios: "padding", android: undefined })}
-      className="m-5 border border-gray-300 rounded-lg p-5"
+      className="m-5 border border-gray-300 rounded-lg p-5 dark:bg-slate-700"
     >
-      <Text className="text-2xl font-bold gap-5">
+      <Text className="text-2xl font-bold gap-5 dark:text-white">
         <Ionicons name="cog-outline" size={20} />
         <Text>Configurar Sevidor</Text>
       </Text>
@@ -87,7 +90,9 @@ const Servidor = () => {
         name="url"
         render={({ field: { onChange, onBlur, value } }) => (
           <View className="mt-5">
-            <Text className="text-xl font-bold mb-2">URL del Servidor</Text>
+            <Text className="text-xl font-bold mb-2 dark:text-white">
+              URL del Servidor
+            </Text>
             <TextInput
               onChangeText={onChange}
               placeholder="http://localhost:3000"
@@ -96,7 +101,7 @@ const Servidor = () => {
               autoCorrect={false}
               autoCapitalize="none"
               value={value}
-              className="border rounded-lg px-2 border-gray-300"
+              className="border rounded-lg px-2 border-gray-300 dark:text-white"
             />
           </View>
         )}
@@ -116,12 +121,14 @@ const Servidor = () => {
         onPress={handleConexion}
         className="bg-green-800 rounded-lg mt-5 py-2"
       >
-        <Text className="text-white text-center text-xl">Probar conexion</Text>
+        <Text className="text-white text-center text-xl">
+          {loadingConexion ? "Conectando..." : "Probar conexion"}
+        </Text>
       </Pressable>
       {conexion && bandera ? (
         <View className="flex-row items-center gap-2 mt-2">
           <Ionicons name="checkmark-circle-outline" size={25} color="green" />
-          <Text className="text-green-800 text-center text-xl">
+          <Text className="text-green-800 text-center text-xl dark:text-white">
             Conexion Exitosa
           </Text>
         </View>
@@ -129,7 +136,7 @@ const Servidor = () => {
         bandera && (
           <View className="flex-row items-center gap-2 mt-2">
             <Ionicons name="close-circle-outline" size={25} color="red" />
-            <Text className="text-red-800 text-center text-xl">
+            <Text className="text-red-800 text-center text-xl dark:text-white">
               Error al probar la conexion
             </Text>
           </View>

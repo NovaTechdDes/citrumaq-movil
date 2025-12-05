@@ -12,7 +12,7 @@ export const probarConexion = async () => {
   const url = await getServerUrl();
 
   try {
-    const { data } = await axios.get(`${url}citrumaq`);
+    const { data } = await axios.get(`${url}citrumaq`, { timeout: 1000 });
     return data;
   } catch (error) {
     console.error(error);

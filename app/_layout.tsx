@@ -35,7 +35,9 @@ export default function RootLayout() {
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             </Stack>
             <StatusBar
-              style="inverted"
+              animated
+              translucent={false}
+              style={colorScheme === "dark" ? "light" : "dark"}
               backgroundColor={colorScheme === "dark" ? "white" : "black"}
             />
           </SafeAreaView>
