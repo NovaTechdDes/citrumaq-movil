@@ -13,7 +13,7 @@ const Header = () => {
     }
   };
   return (
-    <View className="flex-row justify-between items-center p-2">
+    <View className="flex-row justify-between items-center p-2 ">
       <Text className="text-2xl font-semibold dark:text-white text-black">
         Mis Maquinas
       </Text>

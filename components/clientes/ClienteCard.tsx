@@ -78,8 +78,8 @@ const ClienteCard = ({ cliente }: Props) => {
           </View>
         </View>
 
-        <View className="flex-row justify-center gap-5">
-          <View className="gap-2 dark:bg-slate-700 w-[45%] p-2 rounded-lg">
+        <View className="flex-row justify-center gap-5 dark:bg-slate-700">
+          <View className="gap-2  w-[45%] p-2 rounded-lg">
             <View className="flex-row gap-2 items-center">
               <Text className="dark:text-blue-500">
                 <Ionicons name="phone-portrait-outline" size={20} />
@@ -93,7 +93,7 @@ const ClienteCard = ({ cliente }: Props) => {
             </Text>
           </View>
 
-          <View className="gap-2 dark:bg-slate-700 w-[45%] p-2 rounded-lg">
+          <View className="gap-2 w-[45%] p-2 rounded-lg">
             <View className="flex-row gap-2 items-center">
               <Text className="dark:text-blue-500">
                 <Ionicons name="home-outline" size={20} />

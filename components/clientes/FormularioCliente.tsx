@@ -2,6 +2,7 @@ import { Cliente } from "@/core/interface/Cliente";
 import { useMutateClientes } from "@/hooks";
 import { useColorScheme } from "@/hooks/use-color-scheme.web";
 import { useClienteStore } from "@/presentation/store/useClienteStore";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -26,7 +27,14 @@ const FormularioCliente = () => {
   const { mutateAsync: modificar, isPending: isPendingModificar } =
     modificarCliente;
 
+  const [error, setError] = useState(false);
+
   const handleAddCliente = async (data: Cliente) => {
+    if (!data.denominacion || !data.documento) {
+      setError(true);
+      return;
+    }
+
     const ok = await agregar(data);
     if (ok) {
       reset();
@@ -49,7 +57,7 @@ const FormularioCliente = () => {
 
   return (
     <KeyboardAwareScrollView extraScrollHeight={2} enableOnAndroid={true}>
-      <View className="border mx-5 border-gray-300 rounded-lg p-5 mt-5 ">
+      <View className="border p-5 border-gray-300 rounded-lg">
         <Text className="font-semibold text-xl mb-2">
           {clienteSeleccionado ? "Modifica Cliente" : "Nuevo Cliente"}
         </Text>
@@ -60,6 +68,7 @@ const FormularioCliente = () => {
             >
               Nombre *
             </Text>
+            {error && <Text className="text-red-500">Texto obligatorio</Text>}
             <Controller
               name="denominacion"
               control={control}
@@ -77,8 +86,9 @@ const FormularioCliente = () => {
             <Text
               className={`font-semibold mb-2 text-xl ${colorScheme === "dark" ? "text-white" : "text-black"}`}
             >
-              Documento
+              Documento *
             </Text>
+            {error && <Text className="text-red-500">Texto obligatorio</Text>}
             <Controller
               name="documento"
               control={control}

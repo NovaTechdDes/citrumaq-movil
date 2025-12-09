@@ -15,15 +15,13 @@ const Header = () => {
   };
   return (
     <View className={`flex-row justify-between items-center p-2`}>
-      <Text
-        className={`text-2xl font-semibold ${colorScheme === "dark" ? "text-white" : "text-black"}`}
-      >
+      <Text className={`text-2xl font-semibold dark:text-white`}>
         Mis Clientes
       </Text>
 
       <Pressable
         onPress={handleModal}
-        className={`flex gap-2 flex-row rounded-lg px-2 bg-blue-500 py-1 items-center `}
+        className={`flex gap-2 flex-row rounded-lg px-2 bg-blue-600 dark:bg-blue-700 py-1 items-center `}
       >
         {!modalAbierto && (
           <Ionicons name="add-outline" size={20} color="white" />

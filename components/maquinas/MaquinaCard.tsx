@@ -56,14 +56,14 @@ const MaquinaCard = ({ maquina }: Props) => {
           <Text className="text-black font-semibold text-xl dark:text-white">
             {descripcion}
           </Text>
-          <Text className="text-slate-300 font-semibold text-lg">
+          <Text className="text-slate-600 dark:text-white font-semibold text-lg">
             Cliente:
-            <Text className="dark:text-white text-lg">{cliente}</Text>
+            <Text className="dark:text-white  text-lg">{cliente}</Text>
           </Text>
         </View>
 
         <View className="flex flex-row justify-between gap-10">
-          <View className="flex flex-row gap-2 items-center w-[45%] dark:bg-slate-600  rounded-lg px-2">
+          <View className="flex flex-row gap-2 items-center w-[45%] dark:bg-slate-600   rounded-lg px-2">
             <Text className="dark:text-orange-500">
               <Ionicons name="cube-outline" size={20} />
             </Text>
@@ -153,7 +153,7 @@ const MaquinaCard = ({ maquina }: Props) => {
               onPress={handleDelete}
               className="border w-[45%] justify-center gap-2 border-red-500 bg-red-500 p-2 rounded-lg flex-row dark:bg-slate-800"
             >
-              <Text className="dark:text-red-500">
+              <Text className="dark:text-red-500 text-white">
                 <Ionicons name="trash-outline" size={20} />
               </Text>
               <Text className="text-white dark:text-red-500">Eliminar</Text>

@@ -13,6 +13,15 @@ export default function HomeScreen() {
   const { data: clientes } = useClientes();
   const { modalAbierto, setBuscador } = useClienteStore();
 
+  if (modalAbierto) {
+    return (
+      <View className="dark:bg-black h-screen p-5">
+        <Header />
+        <FormularioCliente />
+      </View>
+    );
+  }
+
   if (clientes?.length === 0) {
     return (
       <View
@@ -20,13 +29,10 @@ export default function HomeScreen() {
       >
         <Header />
 
-        {modalAbierto && <FormularioCliente />}
         <View
-          className={`border my-2 border-gray-500 rounded-lg py-2 ${colorScheme === "dark" ? "bg-slate-700" : "bg-white"}`}
+          className={`border my-2 border-gray-500 rounded-lg py-2 dark:bg-slate-700`}
         >
-          <Text
-            className={`p-2 text-center text-xl ${colorScheme === "dark" ? "text-white" : "text-slate-600"}`}
-          >
+          <Text className={`p-2 text-center text-xl dark:text-slate-300`}>
             No hay clientes registrados. ¡Agrega uno para comenzar!
           </Text>
         </View>
@@ -37,8 +43,6 @@ export default function HomeScreen() {
   return (
     <View className="px-2 py-10 dark:bg-black h-screen rounded-lg">
       <Header />
-
-      {modalAbierto && <FormularioCliente />}
 
       <View className="mt-2 border rounded-lg border-slate-500">
         <TextInput

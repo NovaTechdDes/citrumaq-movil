@@ -19,14 +19,22 @@ export default function Maquina() {
     }
   };
 
+  if (modalAbierto) {
+    return (
+      <View className="dark:bg-black h-screen p-2">
+        <Header />
+        <FormularioMaquina />
+      </View>
+    );
+  }
+
   if (maquinas?.length === 0) {
     return (
-      <View className="px-2 rounded-lg py-10 h-screen">
+      <View className="px-2 rounded-lg py-10 h-screen dark:bg-black">
         <Header />
 
-        {modalAbierto && <FormularioMaquina />}
         <View className="border my-2 border-gray-500 rounded-lg py-2 dark:bg-slate-700">
-          <Text className="p-2 text-center text-xl dark:text-slate-600">
+          <Text className="p-2 text-center text-xl dark:text-slate-300">
             No hay maquinas registradas. ¡Agrega una para comenzar!
           </Text>
         </View>
@@ -37,8 +45,6 @@ export default function Maquina() {
   return (
     <View className="px-2 pt-10 dark:bg-black h-screen rounded-lg">
       <Header />
-
-      {modalAbierto && <FormularioMaquina />}
 
       <View className="my-3">
         <TextInput
