@@ -1,23 +1,24 @@
 import { db } from "./db";
 
 export const setupDatabase = async () => {
-    const conexion = await db();
-    await conexion.execAsync('PRAGMA foreign_keys = ON');
+  const conexion = await db();
+  await conexion.execAsync("PRAGMA foreign_keys = ON");
 
-    conexion.execAsync(
-        `CREATE TABLE IF NOT EXISTS clientes (
+  conexion.execAsync(
+    `CREATE TABLE IF NOT EXISTS clientes (
                 id integer primary key autoincrement,
                 denominacion text,
                 domicilio text,
                 telefono text,
                 documento text,
-                observacion_cliente blob
-            );
+                observacion_cliente blob,
+                id_vendedor integer
+            )
         `
-    );
+  );
 
-    conexion.execAsync(
-        `CREATE TABLE IF NOT EXISTS maquinas (
+  conexion.execAsync(
+    `CREATE TABLE IF NOT EXISTS maquinas (
             id integer primary key autoincrement,
             descripcion text not null,
             marca text,
@@ -27,6 +28,7 @@ export const setupDatabase = async () => {
             observacion_maquina blob,
             id_cliente integer REFERENCES clientes(id)
             
+            
             )`
-    )
-}
+  );
+};
