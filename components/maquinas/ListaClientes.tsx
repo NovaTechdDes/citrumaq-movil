@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import { Pressable, Text } from 'react-native';
 
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
   telefono: string;
   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectCliente: React.Dispatch<React.SetStateAction<number>>;
-  onChange: ReactNode;
+  onChange: (id: number) => void;
 }
 
 const ListaClientes = ({ id, denominacion, localidad, telefono, closeModal, setSelectCliente, onChange }: Props) => {
