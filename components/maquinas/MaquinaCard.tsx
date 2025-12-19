@@ -50,7 +50,7 @@ const MaquinaCard = ({ maquina }: Props) => {
   };
 
   return (
-    <View className="border my-2 border-gray-500 rounded-lg py-2 dark:bg-slate-700">
+    <View className="border my-2 border-gray-500 rounded-lg py-2 dark:bg-black">
       <View className="gap-3 px-5">
         <View className="flex-row justify-between items-center">
           <Text className="text-black font-semibold text-xl dark:text-white">
@@ -151,7 +151,7 @@ const MaquinaCard = ({ maquina }: Props) => {
           ) : (
             <Pressable
               onPress={handleDelete}
-              className="border w-[45%] justify-center gap-2 border-red-500 bg-red-500 p-2 rounded-lg flex-row dark:bg-slate-800"
+              className="border w-[45%] justify-center gap-2 border-red-500 bg-red-500 p-2 rounded-lg flex-row dark:bg-black"
             >
               <Text className="dark:text-red-500 text-white">
                 <Ionicons name="trash-outline" size={20} />

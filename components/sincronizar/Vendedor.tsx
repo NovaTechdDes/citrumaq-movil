@@ -26,7 +26,6 @@ const Vendedor = () => {
         console.warn("Error al leer el Vendedor Guardado", error);
       }
     })();
-    console.log("a");
   }, [setValue]);
 
   const onSubmit = async (data: CodigoVendedor) => {

@@ -4,10 +4,15 @@ import { Cliente } from "../interface/Cliente";
 export const getClientes = async (): Promise<Cliente[]> => {
   const conexion = await db();
 
-  const filas = (await conexion.getAllAsync(
-    "SELECT * FROM clientes"
-  )) as Cliente[];
-  return filas;
+  try {
+    const filas = (await conexion.getAllAsync(
+      "SELECT c.*, l.nombre_loc FROM clientes c LEFT JOIN localidad l on c.localidad = l.id_loc "
+    )) as Cliente[];
+    return filas;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };
 
 export const startAgregarCliente = async (
@@ -15,8 +20,12 @@ export const startAgregarCliente = async (
 ): Promise<boolean> => {
   const vendedor = await AsyncStorage.getItem("vendedor");
   const conexion = await db();
-  const res = await conexion.runAsync(`INSERT INTO clientes 
-        (denominacion, domicilio, telefono, documento, observacion_cliente, id_vendedor) VALUES ('${cliente.denominacion}', '${cliente.domicilio}', '${cliente.telefono}', '${cliente.documento}','${cliente.observacion_cliente}', ${vendedor})`);
+  const res = await conexion.runAsync(`
+    INSERT INTO clientes 
+      (denominacion, domicilio, telefono, documento, localidad, observacion_cliente, id_vendedor, fecha_alta)
+    VALUES ('
+      ${cliente.denominacion}', '${cliente.domicilio}', '${cliente.telefono}',
+      '${cliente.documento}','${cliente.localidad}','${cliente.observacion_cliente}', ${vendedor}, datetime('now'))`);
 
   if (res) {
     return true;
@@ -30,7 +39,7 @@ export const startDeleteCliente = async (id: number): Promise<boolean> => {
   const res = await conexion.runAsync("DELETE FROM clientes WHERE id = $id", {
     $id: id,
   });
-  console.log(res);
+
   if (res) {
     return true;
   } else {
@@ -48,7 +57,8 @@ export const startPutCliente = async (
     `UPDATE clientes SET 
             denominacion = $denominacion, 
             domicilio = $domicilio, 
-            telefono = $telefono, 
+            telefono = $telefono,
+            localidad = $localidad,
             documento = $documento, 
             observacion_cliente = $observacion_cliente 
         WHERE id = $id`,
@@ -57,6 +67,7 @@ export const startPutCliente = async (
       $domicilio: cliente.domicilio ?? "",
       $telefono: cliente.telefono ?? "",
       $documento: cliente.documento ?? "",
+      $localidad: cliente.localidad ?? "",
       $observacion_cliente: cliente.observacion_cliente ?? "",
       $id: cliente.id,
     }

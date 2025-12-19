@@ -10,9 +10,11 @@ export const setupDatabase = async () => {
                 denominacion text,
                 domicilio text,
                 telefono text,
+                localidad text REFERENCES localidad(id_loc),
                 documento text,
                 observacion_cliente blob,
-                id_vendedor integer
+                id_vendedor integer,
+                fecha_alta timestamp
             )
         `
   );
@@ -29,6 +31,13 @@ export const setupDatabase = async () => {
             id_cliente integer REFERENCES clientes(id)
             
             
+            )`
+  );
+
+  conexion.execAsync(
+    `CREATE TABLE IF NOT EXISTS localidad (
+            id_loc integer unique,
+            nombre_loc text unique
             )`
   );
 };

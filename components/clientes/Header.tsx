@@ -1,16 +1,18 @@
-import { useColorScheme } from "@/hooks/use-color-scheme.web";
+import { useMutateLocalidades } from "@/hooks/localidades/useMutateLocalidades";
 import { useClienteStore } from "@/presentation/store/useClienteStore";
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
 const Header = () => {
   const { openModal, closeModal, modalAbierto } = useClienteStore();
-  const colorScheme = useColorScheme();
-  const handleModal = () => {
+  const { modificarLocalidad } = useMutateLocalidades();
+
+  const handleModal = async () => {
     if (modalAbierto) {
       closeModal();
     } else {
       openModal();
+      await modificarLocalidad.mutateAsync();
     }
   };
   return (

@@ -1,16 +1,19 @@
 import { Cliente } from "@/core/interface/Cliente";
 import { useMutateClientes } from "@/hooks";
+import { useLocalidades } from "@/hooks/localidades/useLocalidades";
 import { useColorScheme } from "@/hooks/use-color-scheme.web";
 import { useClienteStore } from "@/presentation/store/useClienteStore";
+import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
+//radmin vpn
 const initialState: Cliente = {
   domicilio: "",
   documento: "",
   denominacion: "",
+  localidad: "",
   telefono: "",
   observacion_cliente: "",
 };
@@ -23,6 +26,8 @@ const FormularioCliente = () => {
     defaultValues: clienteSeleccionado ?? initialState,
   });
   const { agregarCliente, modificarCliente } = useMutateClientes();
+
+  const { data: localidades } = useLocalidades();
   const { mutateAsync: agregar, isPending } = agregarCliente;
   const { mutateAsync: modificar, isPending: isPendingModificar } =
     modificarCliente;
@@ -121,6 +126,37 @@ const FormularioCliente = () => {
               )}
             />
           </View>
+
+          <View>
+            <Text
+              className={`font-semibold mb-2 text-xl ${colorScheme === "dark" ? "text-white" : "text-black"}`}
+            >
+              Localidad
+            </Text>
+            <Controller
+              name="localidad"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Picker
+                  style={pickerStyles.base}
+                  selectedValue={value || ""}
+                  dropdownIconColor="#333"
+                  onValueChange={onChange}
+                >
+                  <Picker.Item label="Seleccionar Localidad" value="" />
+                  {localidades?.map((localidad) => (
+                    <Picker.Item
+                      key={localidad.id_loc}
+                      color={pickerStyles.item.color}
+                      value={localidad.id_loc}
+                      label={`${localidad.nombre_loc}`}
+                    />
+                  ))}
+                </Picker>
+              )}
+            />
+          </View>
+
           <View>
             <Text
               className={`font-semibold mb-2 text-xl ${colorScheme === "dark" ? "text-white" : "text-black"}`}
@@ -140,6 +176,7 @@ const FormularioCliente = () => {
               )}
             />
           </View>
+
           <View>
             <Text></Text>
             <TextInput />
@@ -162,7 +199,7 @@ const FormularioCliente = () => {
                 disabled={isPending}
                 className="border border-gray-300 px-5 bg-black py-2 rounded-lg dark:bg-blue-500  dark:border-blue-500"
               >
-                <Text className="text-xl font-semibold text-white dark:text-black">
+                <Text className="text-xl font-semibold text-white dark:text-white">
                   {isPending ? "Agregando..." : "Agregar Cliente"}
                 </Text>
               </Pressable>
@@ -183,3 +220,23 @@ const FormularioCliente = () => {
 };
 
 export default FormularioCliente;
+
+export const pickerStyles = {
+  base: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    color: "#000",
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    marginBottom: 12,
+  },
+  item: {
+    color: "#white",
+    backgroundColor: "#fff",
+  },
+  placeholder: {
+    color: "#aaa",
+  },
+};

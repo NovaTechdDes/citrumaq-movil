@@ -101,7 +101,7 @@ const Servidor = () => {
               autoCorrect={false}
               autoCapitalize="none"
               value={value}
-              className="border rounded-lg px-2 border-gray-300 dark:text-white"
+              className="border rounded-lg px-2 border-gray-300 dark:text-white dark:placeholder:text-white"
             />
           </View>
         )}

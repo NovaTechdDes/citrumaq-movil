@@ -8,7 +8,6 @@ const SincronizarDatos = () => {
   const handlePress = async () => {
     setLoading(true);
     const { ok, msg } = await enviarDatos();
-
     if (ok) {
       Alert.alert(msg);
     } else {

@@ -12,14 +12,20 @@ interface Props {
 const ClienteCard = ({ cliente }: Props) => {
   const colorScheme = useColorScheme();
 
-  const { denominacion, documento, domicilio, telefono, observacion_cliente } =
-    cliente;
+  const {
+    denominacion,
+    documento,
+    domicilio,
+    telefono,
+    observacion_cliente,
+    nombre_loc,
+  } = cliente;
   const { openModal, buscador } = useClienteStore();
   const { eliminarCliente } = useMutateClientes();
   const { mutateAsync: eliminar, isPending } = eliminarCliente;
 
   if (
-    !cliente.denominacion.toUpperCase().startsWith(buscador) &&
+    !cliente.denominacion.toUpperCase().includes(buscador) &&
     !cliente.telefono.toUpperCase().startsWith(buscador)
   )
     return;
@@ -47,64 +53,86 @@ const ClienteCard = ({ cliente }: Props) => {
 
   return (
     <View
-      className={`border my-2 border-gray-500 rounded-lg py-2 ${colorScheme === "dark" ? "bg-slate-800" : "bg-white"}`}
+      className={`border my-2 border-gray-500 rounded-lg py-2 ${colorScheme === "dark" ? "bg-black" : "bg-white"}`}
     >
       <View className="gap-3 px-5 py-5">
         <View className="flex-col justify-center items-center">
           <View className="flex-row w-full p-3 items-center gap-2">
-            <Text className="text-blue-500 dark:bg-slate-700 p-2 rounded-lg">
-              <Ionicons name="person-outline" size={20} />
-            </Text>
+            <View className="flex flex-row items-center dark:text-[#6d65fe] dark:bg-[#6d65fe] rounded-lg p-2">
+              <Text className="capitalize">{denominacion.trim()[0]}</Text>
+              <Text className="capitalize">{denominacion.trim()[1]}</Text>
+            </View>
 
             <Text
               className={`text-black font-semibold text-xl ${colorScheme === "dark" ? "text-white" : "text-black"}`}
             >
-              {denominacion}
-            </Text>
-          </View>
-
-          <View className="flex w-full dark:bg-slate-700 p-3 rounded-lg">
-            <View className="flex-row gap-2 items-center">
-              <Text className="dark:text-blue-500">
-                <Ionicons name="albums-outline" size={20} />
-              </Text>
-              <Text className="dark:text-slate-300">Documento</Text>
-            </View>
-            <Text
-              className={`text-slate-600 text-xl font-semibold dark:text-white`}
-            >
-              {documento}
+              {denominacion.trim()}
             </Text>
           </View>
         </View>
 
-        <View className="flex-row justify-center gap-5 dark:bg-slate-700">
-          <View className="gap-2  w-[45%] p-2 rounded-lg">
-            <View className="flex-row gap-2 items-center">
-              <Text className="dark:text-blue-500">
-                <Ionicons name="phone-portrait-outline" size={20} />
-              </Text>
-              <Text className="dark:text-slate-300">Teléfono</Text>
+        <View className="flex-row justify-center gap-5 dark:bg-slate-800">
+          <View className="gap-2 flex-row  w-[45%] p-2 rounded-lg">
+            <View className="flex-row gap-2 items-center  rounded-lg ">
+              <Ionicons name="albums-outline" size={20} color="violet" />
             </View>
-            <Text
-              className={`text-slate-600 text-xl font-semibold dark:text-white`}
-            >
-              {telefono}
-            </Text>
+            <View>
+              <Text className="dark:text-slate-300">Documento</Text>
+              <Text
+                className={`text-slate-600 text-xl font-semibold dark:text-white`}
+              >
+                {documento}
+              </Text>
+            </View>
           </View>
 
-          <View className="gap-2 w-[45%] p-2 rounded-lg">
+          <View className="gap-2 flex-row  w-[45%] p-2 rounded-lg">
             <View className="flex-row gap-2 items-center">
-              <Text className="dark:text-blue-500">
-                <Ionicons name="home-outline" size={20} />
-              </Text>
-              <Text className="dark:text-slate-300">Domicilio</Text>
+              <Ionicons name="location-outline" size={20} color="violet" />
             </View>
-            <Text
-              className={`text-slate-600 text-xl font-semibold dark:text-white`}
-            >
-              {domicilio}
-            </Text>
+            <View>
+              <Text className="dark:text-slate-300">Localidad</Text>
+              <Text
+                className={`text-slate-600 text-xl font-semibold dark:text-white`}
+              >
+                {nombre_loc}
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        <View className="flex-row justify-center gap-5 dark:bg-slate-800">
+          <View className="gap-2 flex-row  w-[45%] p-2 rounded-lg">
+            <View className="flex-row gap-2 items-center">
+              <Ionicons
+                name="phone-portrait-outline"
+                size={20}
+                color="violet"
+                className="dark:text-slate-300"
+              />
+            </View>
+            <View>
+              <Text className="dark:text-slate-300">Teléfono</Text>
+              <Text
+                className={`text-slate-600 text-xl font-semibold dark:text-white`}
+              >
+                {telefono}
+              </Text>
+            </View>
+          </View>
+
+          <View className="gap-2 flex-row w-[45%] p-2 rounded-lg">
+            <View className="flex-row gap-2 items-center">
+              <Ionicons name="home-outline" size={20} color="violet" />
+            </View>
+            <View>
+              <Text className="dark:text-slate-300">Domicilio</Text>
+              <Text
+                className={`text-slate-600 text-xl font-semibold dark:text-white`}
+              >
+                {domicilio}
+              </Text>
+            </View>
           </View>
         </View>
 
@@ -137,7 +165,7 @@ const ClienteCard = ({ cliente }: Props) => {
           ) : (
             <Pressable
               onPress={handleDelete}
-              className="w-[45%] justify-center  bg-red-500 p-2 gap-5 rounded-lg flex-row dark:bg-slate-700  "
+              className="w-[45%] justify-center border bg-red-500 p-2 gap-5 rounded-lg flex-row dark:bg-black dark:border-red-500"
             >
               <Text className="dark:text-red-500 text-white">
                 <Ionicons name="trash-outline" size={20} />
