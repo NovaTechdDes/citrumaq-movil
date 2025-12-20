@@ -6,4 +6,6 @@ export * from './clientes/useMutateClientes';
 export * from './maquinas/useMaquinas';
 export * from './maquinas/useMutateMaquinas';
 
-
+//Localidades
+export * from './localidades/useLocalidades';
+export * from './localidades/useMutateLocalidades';

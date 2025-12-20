@@ -1,13 +1,11 @@
-import { db } from "@/database/db";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Cliente } from "../interface/Cliente";
+import { db } from '@/database/db';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Cliente } from '../interface/Cliente';
 export const getClientes = async (): Promise<Cliente[]> => {
   const conexion = await db();
 
   try {
-    const filas = (await conexion.getAllAsync(
-      "SELECT c.*, l.nombre_loc FROM clientes c LEFT JOIN localidad l on c.localidad = l.id_loc "
-    )) as Cliente[];
+    const filas = (await conexion.getAllAsync('SELECT c.*, l.nombre_loc FROM clientes c LEFT JOIN localidad l on c.localidad = l.id_loc ')) as Cliente[];
     return filas;
   } catch (error) {
     console.error(error);
@@ -15,10 +13,8 @@ export const getClientes = async (): Promise<Cliente[]> => {
   }
 };
 
-export const startAgregarCliente = async (
-  cliente: Cliente
-): Promise<boolean> => {
-  const vendedor = await AsyncStorage.getItem("vendedor");
+export const startAgregarCliente = async (cliente: Cliente): Promise<boolean> => {
+  const vendedor = await AsyncStorage.getItem('vendedor');
   const conexion = await db();
   const res = await conexion.runAsync(`
     INSERT INTO clientes 
@@ -36,7 +32,7 @@ export const startAgregarCliente = async (
 
 export const startDeleteCliente = async (id: number): Promise<boolean> => {
   const conexion = await db();
-  const res = await conexion.runAsync("DELETE FROM clientes WHERE id = $id", {
+  const res = await conexion.runAsync('DELETE FROM clientes WHERE id = $id', {
     $id: id,
   });
 
@@ -47,11 +43,9 @@ export const startDeleteCliente = async (id: number): Promise<boolean> => {
   }
 };
 
-export const startPutCliente = async (
-  cliente: Partial<Cliente>
-): Promise<boolean> => {
+export const startPutCliente = async (cliente: Partial<Cliente>): Promise<boolean> => {
   const conexion = await db();
-  if (!cliente.id) throw new Error("Id de cliente requerido para actualizar");
+  if (!cliente.id) throw new Error('Id de cliente requerido para actualizar');
 
   const res = await conexion.runAsync(
     `UPDATE clientes SET 
@@ -63,12 +57,12 @@ export const startPutCliente = async (
             observacion_cliente = $observacion_cliente 
         WHERE id = $id`,
     {
-      $denominacion: cliente.denominacion ?? "",
-      $domicilio: cliente.domicilio ?? "",
-      $telefono: cliente.telefono ?? "",
-      $documento: cliente.documento ?? "",
-      $localidad: cliente.localidad ?? "",
-      $observacion_cliente: cliente.observacion_cliente ?? "",
+      $denominacion: cliente.denominacion ?? '',
+      $domicilio: cliente.domicilio ?? '',
+      $telefono: cliente.telefono ?? '',
+      $documento: cliente.documento ?? '',
+      $localidad: cliente.localidad ?? '',
+      $observacion_cliente: cliente.observacion_cliente ?? '',
       $id: cliente.id,
     }
   );

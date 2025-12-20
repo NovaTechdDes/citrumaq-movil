@@ -1,23 +1,14 @@
-import FormularioMaquina from "@/components/maquinas/FormularioMaquina";
-import Header from "@/components/maquinas/Header";
-import MaquinaCard from "@/components/maquinas/MaquinaCard";
-import { useMaquinas } from "@/hooks";
-import { useMaquinaStore } from "@/presentation/store/useMaquinaStore";
-import { FlatList, Text, TextInput, View } from "react-native";
+import FormularioMaquina from '@/components/maquinas/FormularioMaquina';
+import Header from '@/components/maquinas/Header';
+import MaquinaCard from '@/components/maquinas/MaquinaCard';
+import { useMaquinas } from '@/hooks';
+import { useMaquinaStore } from '@/presentation/store/useMaquinaStore';
+import { FlatList, Text, TextInput, View } from 'react-native';
 
 export default function Maquina() {
   const { data: maquinas } = useMaquinas();
 
-  const { modalAbierto, closeModal, openModal, setBuscador } =
-    useMaquinaStore();
-
-  const handleModal = () => {
-    if (modalAbierto) {
-      closeModal();
-    } else {
-      openModal();
-    }
-  };
+  const { modalAbierto, setBuscador } = useMaquinaStore();
 
   if (modalAbierto) {
     return (
@@ -34,9 +25,7 @@ export default function Maquina() {
         <Header />
 
         <View className="border my-2 border-gray-500 rounded-lg py-2 dark:bg-slate-700">
-          <Text className="p-2 text-center text-xl dark:text-slate-300">
-            No hay maquinas registradas. ¡Agrega una para comenzar!
-          </Text>
+          <Text className="p-2 text-center text-xl dark:text-slate-300">No hay maquinas registradas. ¡Agrega una para comenzar!</Text>
         </View>
       </View>
     );
@@ -56,9 +45,7 @@ export default function Maquina() {
 
       <FlatList
         data={maquinas}
-        keyExtractor={(item, index) =>
-          item.id ? item.id.toString() : index.toString()
-        }
+        keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         renderItem={({ item }) => <MaquinaCard maquina={item} />}
         contentContainerStyle={{ paddingBottom: 90 }}
       />

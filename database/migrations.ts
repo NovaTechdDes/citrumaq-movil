@@ -1,8 +1,8 @@
-import { db } from "./db";
+import { db } from './db';
 
 export const setupDatabase = async () => {
   const conexion = await db();
-  await conexion.execAsync("PRAGMA foreign_keys = ON");
+  await conexion.execAsync('PRAGMA foreign_keys = ON');
 
   conexion.execAsync(
     `CREATE TABLE IF NOT EXISTS clientes (
@@ -36,7 +36,7 @@ export const setupDatabase = async () => {
 
   conexion.execAsync(
     `CREATE TABLE IF NOT EXISTS localidad (
-            id_loc integer unique,
+            id_loc integer primary key autoincrement,
             nombre_loc text unique
             )`
   );
