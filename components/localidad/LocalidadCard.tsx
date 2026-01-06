@@ -27,7 +27,13 @@ const LocalidadCard = ({ localidad }: Props) => {
       },
       {
         text: 'Eliminar',
-        onPress: () => eliminar(localidad.id_loc),
+        onPress: async () => {
+          const { ok, message } = await eliminar(localidad.id_loc);
+
+          if (!ok) {
+            Alert.alert('Error', message);
+          }
+        },
       },
     ]);
   };

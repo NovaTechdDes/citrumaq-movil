@@ -1,9 +1,9 @@
-import { Cliente } from "@/core/interface/Cliente";
-import { useMutateClientes } from "@/hooks";
-import { useColorScheme } from "@/hooks/use-color-scheme.web";
-import { useClienteStore } from "@/presentation/store/useClienteStore";
-import { Ionicons } from "@expo/vector-icons";
-import { Alert, Pressable, Text, View } from "react-native";
+import { Cliente } from '@/core/interface/Cliente';
+import { useMutateClientes } from '@/hooks';
+import { useColorScheme } from '@/hooks/use-color-scheme.web';
+import { useClienteStore } from '@/presentation/store/useClienteStore';
+import { Ionicons } from '@expo/vector-icons';
+import { Alert, Pressable, Text, View } from 'react-native';
 
 interface Props {
   cliente: Cliente;
@@ -12,23 +12,12 @@ interface Props {
 const ClienteCard = ({ cliente }: Props) => {
   const colorScheme = useColorScheme();
 
-  const {
-    denominacion,
-    documento,
-    domicilio,
-    telefono,
-    observacion_cliente,
-    nombre_loc,
-  } = cliente;
+  const { denominacion, documento, domicilio, telefono, observacion_cliente, nombre_loc } = cliente;
   const { openModal, buscador } = useClienteStore();
   const { eliminarCliente } = useMutateClientes();
   const { mutateAsync: eliminar, isPending } = eliminarCliente;
 
-  if (
-    !cliente.denominacion.toUpperCase().includes(buscador) &&
-    !cliente.telefono.toUpperCase().startsWith(buscador)
-  )
-    return;
+  if (!cliente.denominacion.toUpperCase().includes(buscador) && !cliente.telefono.toUpperCase().startsWith(buscador)) return;
 
   const handlePut = () => {
     openModal(cliente);
@@ -37,24 +26,24 @@ const ClienteCard = ({ cliente }: Props) => {
   const handleDelete = () => {
     if (!cliente.id) return;
 
-    Alert.alert(
-      "Eliminar",
-      `Quiere eliminar el cliente ${cliente.denominacion}`,
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Eliminar",
-          style: "destructive",
-          onPress: () => eliminar(cliente?.id!),
+    Alert.alert('Eliminar', `Quiere eliminar el cliente ${cliente.denominacion}`, [
+      { text: 'Cancelar', style: 'cancel' },
+      {
+        text: 'Eliminar',
+        style: 'destructive',
+        onPress: async () => {
+          const { ok, message } = await eliminar(cliente?.id!);
+
+          if (!ok) {
+            Alert.alert('Error: ', message);
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   return (
-    <View
-      className={`border my-2 border-gray-500 rounded-lg py-2 ${colorScheme === "dark" ? "bg-black" : "bg-white"}`}
-    >
+    <View className={`border my-2 border-gray-500 rounded-lg py-2 ${colorScheme === 'dark' ? 'bg-black' : 'bg-white'}`}>
       <View className="gap-3 px-5 py-5">
         <View className="flex-col justify-center items-center">
           <View className="flex-row w-full p-3 items-center gap-2">
@@ -63,11 +52,7 @@ const ClienteCard = ({ cliente }: Props) => {
               <Text className="capitalize">{denominacion.trim()[1]}</Text>
             </View>
 
-            <Text
-              className={`text-black font-semibold text-xl ${colorScheme === "dark" ? "text-white" : "text-black"}`}
-            >
-              {denominacion.trim()}
-            </Text>
+            <Text className={`text-black font-semibold text-xl ${colorScheme === 'dark' ? 'text-white' : 'text-black'}`}>{denominacion.trim()}</Text>
           </View>
         </View>
 
@@ -78,11 +63,7 @@ const ClienteCard = ({ cliente }: Props) => {
             </View>
             <View>
               <Text className="dark:text-slate-300">Documento</Text>
-              <Text
-                className={`text-slate-600 text-xl font-semibold dark:text-white`}
-              >
-                {documento}
-              </Text>
+              <Text className={`text-slate-600 text-xl font-semibold dark:text-white`}>{documento}</Text>
             </View>
           </View>
 
@@ -92,11 +73,7 @@ const ClienteCard = ({ cliente }: Props) => {
             </View>
             <View>
               <Text className="dark:text-slate-300">Localidad</Text>
-              <Text
-                className={`text-slate-600 text-xl font-semibold dark:text-white`}
-              >
-                {nombre_loc}
-              </Text>
+              <Text className={`text-slate-600 text-xl font-semibold dark:text-white`}>{nombre_loc}</Text>
             </View>
           </View>
         </View>
@@ -104,20 +81,11 @@ const ClienteCard = ({ cliente }: Props) => {
         <View className="flex-row justify-center gap-5 dark:bg-slate-800">
           <View className="gap-2 flex-row  w-[45%] p-2 rounded-lg">
             <View className="flex-row gap-2 items-center">
-              <Ionicons
-                name="phone-portrait-outline"
-                size={20}
-                color="violet"
-                className="dark:text-slate-300"
-              />
+              <Ionicons name="phone-portrait-outline" size={20} color="violet" className="dark:text-slate-300" />
             </View>
             <View>
               <Text className="dark:text-slate-300">Teléfono</Text>
-              <Text
-                className={`text-slate-600 text-xl font-semibold dark:text-white`}
-              >
-                {telefono}
-              </Text>
+              <Text className={`text-slate-600 text-xl font-semibold dark:text-white`}>{telefono}</Text>
             </View>
           </View>
 
@@ -127,34 +95,21 @@ const ClienteCard = ({ cliente }: Props) => {
             </View>
             <View>
               <Text className="dark:text-slate-300">Domicilio</Text>
-              <Text
-                className={`text-slate-600 text-xl font-semibold dark:text-white`}
-              >
-                {domicilio}
-              </Text>
+              <Text className={`text-slate-600 text-xl font-semibold dark:text-white`}>{domicilio}</Text>
             </View>
           </View>
         </View>
 
         {observacion_cliente && (
           <View className="border-l border-orange-300 pl-3">
-            <Text className="text-xl font-bold text-orange-500">
-              Observaciones
-            </Text>
+            <Text className="text-xl font-bold text-orange-500">Observaciones</Text>
             <Text className="text-lg">{observacion_cliente}</Text>
           </View>
         )}
 
         <View className="gap-16 flex-row w-full mt-5 border-t border-gray-500 pt-5 px-5 justify-center">
-          <Pressable
-            onPress={handlePut}
-            className="border w-[45%] justify-center border-gray-500 p-2 rounded-lg flex-row"
-          >
-            <Ionicons
-              name="create-outline"
-              size={20}
-              color={colorScheme === "dark" ? "white" : "black"}
-            />
+          <Pressable onPress={handlePut} className="border w-[45%] justify-center border-gray-500 p-2 rounded-lg flex-row">
+            <Ionicons name="create-outline" size={20} color={colorScheme === 'dark' ? 'white' : 'black'} />
             <Text className="dark:text-white">Editar</Text>
           </Pressable>
 
@@ -163,10 +118,7 @@ const ClienteCard = ({ cliente }: Props) => {
               <Text className="text-red-500 text-xs">Eliminando...</Text>
             </View>
           ) : (
-            <Pressable
-              onPress={handleDelete}
-              className="w-[45%] justify-center border bg-red-500 p-2 gap-5 rounded-lg flex-row dark:bg-black dark:border-red-500"
-            >
+            <Pressable onPress={handleDelete} className="w-[45%] justify-center border bg-red-500 p-2 gap-5 rounded-lg flex-row dark:bg-black dark:border-red-500">
               <Text className="dark:text-red-500 text-white">
                 <Ionicons name="trash-outline" size={20} />
               </Text>

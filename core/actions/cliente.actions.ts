@@ -30,16 +30,38 @@ export const startAgregarCliente = async (cliente: Cliente): Promise<boolean> =>
   }
 };
 
-export const startDeleteCliente = async (id: number): Promise<boolean> => {
-  const conexion = await db();
-  const res = await conexion.runAsync('DELETE FROM clientes WHERE id = $id', {
-    $id: id,
-  });
+export const startDeleteCliente = async (id: number): Promise<{ ok: boolean; message: string }> => {
+  try {
+    const conexion = await db();
+    const res = await conexion.runAsync('DELETE FROM clientes WHERE id = $id', {
+      $id: id,
+    });
 
-  if (res) {
-    return true;
-  } else {
-    return false;
+    if (res) {
+      return {
+        ok: true,
+        message: 'Cliente eliminado correctamente',
+      };
+    } else {
+      return {
+        ok: false,
+        message: 'Error al eliminar el cliente',
+      };
+    }
+  } catch (error: any) {
+    const errorMessage = error.message || '';
+
+    if (errorMessage.includes('FOREIGN KEY constraint failed')) {
+      return {
+        ok: false,
+        message: 'No se puede eliminar el cliente porque tiene registros relacionados en Maquinas',
+      };
+    }
+
+    return {
+      ok: false,
+      message: 'Error al eliminar el cliente',
+    };
   }
 };
 

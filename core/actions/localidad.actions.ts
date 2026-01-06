@@ -48,19 +48,39 @@ export const startModificarLocalidad = async (localidad: Localidad): Promise<boo
   }
 };
 
-export const startEliminarLocalidad = async (id: number): Promise<boolean> => {
+export const startEliminarLocalidad = async (id: number): Promise<{ ok: boolean; message: string }> => {
   const conexion = await db();
   try {
     const res = await conexion.runAsync('DELETE FROM localidad WHERE id_loc = $id_loc', {
       $id_loc: id,
     });
+    console.log(res);
     if (res.changes > 0) {
-      return true;
+      return {
+        ok: true,
+        message: 'Localidad eliminada correctamente',
+      };
     } else {
-      return false;
+      return {
+        ok: false,
+        message: 'Error al eliminar la localidad',
+      };
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return false;
+
+    const errorMessage = error.message || '';
+
+    if (errorMessage.includes('FOREIGN KEY constraint failed')) {
+      return {
+        ok: false,
+        message: 'No se puede eliminar la localidad porque tiene registros relacionados en Clientes',
+      };
+    }
+
+    return {
+      ok: false,
+      message: 'Error al eliminar la localidad',
+    };
   }
 };
