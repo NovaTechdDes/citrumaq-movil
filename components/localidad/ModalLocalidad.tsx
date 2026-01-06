@@ -1,7 +1,7 @@
 import { useMutateLocalidades } from '@/hooks';
 import { useLocalidadStore } from '@/presentation/store/useLocalidadStore';
 import { Controller, useForm } from 'react-hook-form';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const ModalLocalidad = () => {
@@ -27,7 +27,13 @@ const ModalLocalidad = () => {
         closeModal();
       }
     } else {
-      const ok = await agregar(data);
+      const { ok, message } = await agregar(data);
+
+      if (!ok) {
+        Alert.alert('Error: ', message);
+        return;
+      }
+
       if (ok) {
         reset();
         closeModal();

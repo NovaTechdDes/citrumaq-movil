@@ -13,20 +13,29 @@ export const startObtenerLocalidades = async () => {
   }
 };
 
-export const startAgregarLocalidad = async (localidad: Localidad): Promise<boolean> => {
+export const startAgregarLocalidad = async (localidad: Localidad): Promise<{ ok: boolean; message: string }> => {
   const conexion = await db();
   try {
     const res = await conexion.runAsync('INSERT INTO localidad (nombre_loc) VALUES ($nombre_loc)', {
       $nombre_loc: localidad.nombre_loc,
     });
     if (res.changes > 0) {
-      return true;
+      return {
+        ok: true,
+        message: 'Localdiad Agregada correctamente',
+      };
     } else {
-      return false;
+      return {
+        ok: false,
+        message: 'Error al agregar la localidad',
+      };
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return false;
+    return {
+      ok: false,
+      message: error.message,
+    };
   }
 };
 
