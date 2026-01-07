@@ -34,14 +34,14 @@ const FormularioMaquina = () => {
   const [selectCliente, setSelectCliente] = useState<number>(0);
 
   const handleAddMaquina = async (data: Maquina) => {
-    const ok = await agregar(data);
+    const { ok } = await agregar(data);
     if (ok) {
       closeModal();
       reset();
     }
   };
   const handleUpdateMaquina = async (data: Maquina) => {
-    const ok = await modificar(data);
+    const { ok } = await modificar(data);
     if (ok) {
       reset();
       closeModal();

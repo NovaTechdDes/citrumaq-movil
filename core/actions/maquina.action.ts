@@ -1,4 +1,3 @@
-import { db } from '@/database/db';
 import { runSafeQuery } from '@/database/runSafeQuery';
 import { Maquina } from '../interface/Maquina';
 
@@ -15,26 +14,41 @@ export const getMaquinas = async (): Promise<Maquina[]> => {
   });
 };
 
-export const startAgregarMaquina = async (maquina: Maquina): Promise<boolean> => {
-  const conexion = await db();
-
-  const res = await conexion.runAsync(`
+export const startAgregarMaquina = async (maquina: Maquina): Promise<{ ok: boolean; message: string }> => {
+  try {
+    return runSafeQuery(async (db) => {
+      const res = await db.runAsync(`
         INSERT INTO maquinas (descripcion, marca, modelo, anio, industria, observacion_maquina, id_cliente)
         VALUES ('${maquina.descripcion}', '${maquina.marca}', '${maquina.modelo}', ${Number(maquina.anio)}, '${maquina.industria}', '${maquina.observacion_maquina}', ${maquina.id_cliente})`);
 
-  if (res) {
-    return true;
-  } else {
-    return false;
+      if (res) {
+        return {
+          ok: true,
+          message: 'Maquina agregada correctamente',
+        };
+      } else {
+        return {
+          ok: false,
+          message: 'Error al agregar la maquina',
+        };
+      }
+    });
+  } catch (error: any) {
+    console.log(error);
+    return {
+      ok: false,
+      message: error.message,
+    };
   }
 };
 
-export const startPutMaquina = async (maquina: Partial<Maquina>): Promise<boolean> => {
-  const conexion = await db();
-  if (!maquina.id) throw new Error('Id de maquina requerido para actualizar');
+export const startPutMaquina = async (maquina: Partial<Maquina>): Promise<{ ok: boolean; message: string }> => {
+  try {
+    return runSafeQuery(async (db) => {
+      if (!maquina.id) throw new Error('Id de maquina requerido para actualizar');
 
-  const res = await conexion.runAsync(
-    `UPDATE maquinas SET 
+      const res = await db.runAsync(
+        `UPDATE maquinas SET 
             descripcion = $descripcion,
             marca = $marca,
             modelo = $modelo,
@@ -43,38 +57,61 @@ export const startPutMaquina = async (maquina: Partial<Maquina>): Promise<boolea
             observacion_maquina = $observacion_maquina,
             id_cliente = $id_cliente
         WHERE id = $id`,
-    {
-      $descripcion: maquina.descripcion ?? '',
-      $marca: maquina.marca ?? '',
-      $modelo: maquina.modelo ?? '',
-      $anio: maquina.anio ?? 0,
-      $industria: maquina.industria ?? 0,
-      $observacion_maquina: maquina.observacion_maquina ?? '',
-      $id_cliente: maquina.id_cliente ?? null,
-      $id: maquina.id,
-    }
-  );
-  if (res) {
-    return true;
-  } else {
-    return false;
+        {
+          $descripcion: maquina.descripcion ?? '',
+          $marca: maquina.marca ?? '',
+          $modelo: maquina.modelo ?? '',
+          $anio: maquina.anio ?? 0,
+          $industria: maquina.industria ?? 0,
+          $observacion_maquina: maquina.observacion_maquina ?? '',
+          $id_cliente: maquina.id_cliente ?? null,
+          $id: maquina.id,
+        }
+      );
+      if (res) {
+        return {
+          ok: true,
+          message: 'Maquina modificada correctamente',
+        };
+      } else {
+        return {
+          ok: false,
+          message: 'Error al modificar la maquina',
+        };
+      }
+    });
+  } catch (error: any) {
+    console.log(error);
+    return {
+      ok: false,
+      message: error.message,
+    };
   }
 };
 
-export const startDeleteMaquina = async (id: number): Promise<boolean> => {
-  const conexion = await db();
-
+export const startDeleteMaquina = async (id: number): Promise<{ ok: boolean; message: string }> => {
   try {
-    const res = await conexion.runAsync('DELETE FROM maquinas WHERE id = $id', { $id: id });
-    // res.changes indica la cantidad de filas afectadas por la sentencia
-    if (res?.changes && res.changes > 0) {
-      return true;
-    } else {
-      // No se eliminó ninguna fila (posiblemente id no existe)
-      return false;
-    }
+    return runSafeQuery(async (db) => {
+      const res = await db.runAsync('DELETE FROM maquinas WHERE id = $id', { $id: id });
+      // res.changes indica la cantidad de filas afectadas por la sentencia
+      if (res?.changes && res.changes > 0) {
+        return {
+          ok: true,
+          message: 'Maquina Eliminado correctamente',
+        };
+      } else {
+        // No se eliminó ninguna fila (posiblemente id no existe)
+        return {
+          ok: false,
+          message: 'No se pudo eliminar maquina',
+        };
+      }
+    });
   } catch (error) {
     console.error('Error eliminando la máquina:', error);
-    return false;
+    return {
+      ok: false,
+      message: 'Error al eliminar la maquina',
+    };
   }
 };
