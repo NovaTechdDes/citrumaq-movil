@@ -1,6 +1,7 @@
 import { db } from '@/database/db';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Cliente } from '../interface/Cliente';
+
 export const getClientes = async (): Promise<Cliente[]> => {
   const conexion = await db();
 
@@ -13,20 +14,34 @@ export const getClientes = async (): Promise<Cliente[]> => {
   }
 };
 
-export const startAgregarCliente = async (cliente: Cliente): Promise<boolean> => {
+export const startAgregarCliente = async (cliente: Cliente): Promise<{ ok: boolean; message: string }> => {
   const vendedor = await AsyncStorage.getItem('vendedor');
   const conexion = await db();
-  const res = await conexion.runAsync(`
+  try {
+    const res = await conexion.runAsync(`
     INSERT INTO clientes 
       (denominacion, domicilio, telefono, documento, localidad, observacion_cliente, id_vendedor, fecha_alta)
     VALUES ('
       ${cliente.denominacion}', '${cliente.domicilio}', '${cliente.telefono}',
       '${cliente.documento}','${cliente.localidad}','${cliente.observacion_cliente}', ${vendedor}, datetime('now'))`);
 
-  if (res) {
-    return true;
-  } else {
-    return false;
+    if (res) {
+      return {
+        ok: true,
+        message: 'Cliente agregado correctamente',
+      };
+    } else {
+      return {
+        ok: false,
+        message: 'Error al agregar el cliente',
+      };
+    }
+  } catch (error: any) {
+    console.error(error);
+    return {
+      ok: false,
+      message: error.message,
+    };
   }
 };
 
@@ -65,12 +80,13 @@ export const startDeleteCliente = async (id: number): Promise<{ ok: boolean; mes
   }
 };
 
-export const startPutCliente = async (cliente: Partial<Cliente>): Promise<boolean> => {
-  const conexion = await db();
-  if (!cliente.id) throw new Error('Id de cliente requerido para actualizar');
+export const startPutCliente = async (cliente: Partial<Cliente>): Promise<{ ok: boolean; message: string }> => {
+  try {
+    const conexion = await db();
+    if (!cliente.id) throw new Error('Id de cliente requerido para actualizar');
 
-  const res = await conexion.runAsync(
-    `UPDATE clientes SET 
+    const res = await conexion.runAsync(
+      `UPDATE clientes SET 
             denominacion = $denominacion, 
             domicilio = $domicilio, 
             telefono = $telefono,
@@ -78,20 +94,33 @@ export const startPutCliente = async (cliente: Partial<Cliente>): Promise<boolea
             documento = $documento, 
             observacion_cliente = $observacion_cliente 
         WHERE id = $id`,
-    {
-      $denominacion: cliente.denominacion ?? '',
-      $domicilio: cliente.domicilio ?? '',
-      $telefono: cliente.telefono ?? '',
-      $documento: cliente.documento ?? '',
-      $localidad: cliente.localidad ?? '',
-      $observacion_cliente: cliente.observacion_cliente ?? '',
-      $id: cliente.id,
-    }
-  );
+      {
+        $denominacion: cliente.denominacion ?? '',
+        $domicilio: cliente.domicilio ?? '',
+        $telefono: cliente.telefono ?? '',
+        $documento: cliente.documento ?? '',
+        $localidad: cliente.localidad ?? '',
+        $observacion_cliente: cliente.observacion_cliente ?? '',
+        $id: cliente.id,
+      }
+    );
 
-  if (res) {
-    return true;
-  } else {
-    return false;
+    if (res) {
+      return {
+        ok: true,
+        message: 'cliente cargado con exito',
+      };
+    } else {
+      return {
+        ok: false,
+        message: 'Error al cargar el cliente',
+      };
+    }
+  } catch (error: any) {
+    console.error(error);
+    return {
+      ok: false,
+      message: error.message,
+    };
   }
 };
