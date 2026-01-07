@@ -6,7 +6,7 @@ import { useClienteStore } from '@/presentation/store/useClienteStore';
 import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 //radmin vpn
 const initialState: Cliente = {
@@ -39,18 +39,22 @@ const FormularioCliente = () => {
       return;
     }
 
-    const ok = await agregar(data);
+    const { ok, message } = await agregar(data);
     if (ok) {
       reset();
       closeModal();
+    } else {
+      Alert.alert('Error', message);
     }
   };
 
   const handleUpdateCliente = async (data: Cliente) => {
-    const ok = await modificar(data);
+    const { ok, message } = await modificar(data);
     if (ok) {
       reset();
       closeModal();
+    } else {
+      Alert.alert('Error', message);
     }
   };
 
