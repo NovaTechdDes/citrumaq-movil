@@ -10,7 +10,12 @@ export const db = async () => {
     console.log('✅ Conexión a Base de Datos establecida');
     return databaseInstance;
   } catch (error) {
-    console.error('❌ Error al conectar a la base de datos:', error);
-    throw error;
+    console.warn('⚠️ DB inválida, reintentando...', error);
+    databaseInstance = null;
+
+    databaseInstance = await SQLite.openDatabaseAsync('citrumaq.db');
+    console.log('🔄 DB reabierta');
+
+    return databaseInstance;
   }
 };

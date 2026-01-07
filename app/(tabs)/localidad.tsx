@@ -3,7 +3,7 @@ import LocalidadCard from '@/components/localidad/LocalidadCard';
 import ModalLocalidad from '@/components/localidad/ModalLocalidad';
 import { useLocalidades } from '@/hooks';
 import { useLocalidadStore } from '@/presentation/store/useLocalidadStore';
-import { FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 
 const Localidad = () => {
   const { modalAbierto } = useLocalidadStore();
@@ -11,8 +11,11 @@ const Localidad = () => {
 
   if (isLoading) {
     return (
-      <View>
-        <Text>Cargando...</Text>
+      <View className=" h-screen">
+        <View className="flex-1 justify-center items-center h-screen bg-white dark:bg-black">
+          <ActivityIndicator size="large" color="#2563eb" />
+          <Text className="text-xl font-bold text-blue-600 dark:text-blue-400">Cargando localidades...</Text>
+        </View>
       </View>
     );
   }
