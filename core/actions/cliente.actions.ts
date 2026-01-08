@@ -4,7 +4,7 @@ import { Cliente } from '../interface/Cliente';
 
 export const getClientes = async (): Promise<Cliente[]> => {
   try {
-    return runSafeQuery(async (db) => {
+    return await runSafeQuery(async (db) => {
       const filas = (await db.getAllAsync('SELECT c.*, l.nombre_loc FROM clientes c LEFT JOIN localidad l on c.localidad = l.id_loc ')) as Cliente[];
       return filas;
     });
@@ -17,7 +17,7 @@ export const getClientes = async (): Promise<Cliente[]> => {
 export const startAgregarCliente = async (cliente: Cliente): Promise<{ ok: boolean; message: string }> => {
   const vendedor = await AsyncStorage.getItem('vendedor');
   try {
-    return runSafeQuery(async (db) => {
+    return await runSafeQuery(async (db) => {
       const res = await db.runAsync(`
     INSERT INTO clientes 
       (denominacion, domicilio, telefono, documento, localidad, observacion_cliente, id_vendedor, fecha_alta)
@@ -48,7 +48,7 @@ export const startAgregarCliente = async (cliente: Cliente): Promise<{ ok: boole
 
 export const startDeleteCliente = async (id: number): Promise<{ ok: boolean; message: string }> => {
   try {
-    return runSafeQuery(async (db) => {
+    return await runSafeQuery(async (db) => {
       const res = await db.runAsync('DELETE FROM clientes WHERE id = $id', {
         $id: id,
       });
@@ -84,7 +84,7 @@ export const startDeleteCliente = async (id: number): Promise<{ ok: boolean; mes
 
 export const startPutCliente = async (cliente: Partial<Cliente>): Promise<{ ok: boolean; message: string }> => {
   try {
-    return runSafeQuery(async (db) => {
+    return await runSafeQuery(async (db) => {
       if (!cliente.id) throw new Error('Id de cliente requerido para actualizar');
 
       const res = await db.runAsync(

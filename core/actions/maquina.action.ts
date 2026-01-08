@@ -16,7 +16,7 @@ export const getMaquinas = async (): Promise<Maquina[]> => {
 
 export const startAgregarMaquina = async (maquina: Maquina): Promise<{ ok: boolean; message: string }> => {
   try {
-    return runSafeQuery(async (db) => {
+    return await runSafeQuery(async (db) => {
       const res = await db.runAsync(`
         INSERT INTO maquinas (descripcion, marca, modelo, anio, industria, observacion_maquina, id_cliente)
         VALUES ('${maquina.descripcion}', '${maquina.marca}', '${maquina.modelo}', ${Number(maquina.anio)}, '${maquina.industria}', '${maquina.observacion_maquina}', ${maquina.id_cliente})`);
@@ -44,7 +44,7 @@ export const startAgregarMaquina = async (maquina: Maquina): Promise<{ ok: boole
 
 export const startPutMaquina = async (maquina: Partial<Maquina>): Promise<{ ok: boolean; message: string }> => {
   try {
-    return runSafeQuery(async (db) => {
+    return await runSafeQuery(async (db) => {
       if (!maquina.id) throw new Error('Id de maquina requerido para actualizar');
 
       const res = await db.runAsync(
@@ -91,7 +91,7 @@ export const startPutMaquina = async (maquina: Partial<Maquina>): Promise<{ ok: 
 
 export const startDeleteMaquina = async (id: number): Promise<{ ok: boolean; message: string }> => {
   try {
-    return runSafeQuery(async (db) => {
+    return await runSafeQuery(async (db) => {
       const res = await db.runAsync('DELETE FROM maquinas WHERE id = $id', { $id: id });
       // res.changes indica la cantidad de filas afectadas por la sentencia
       if (res?.changes && res.changes > 0) {

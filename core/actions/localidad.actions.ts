@@ -3,7 +3,7 @@ import { Localidad } from '../interface/Localidad';
 
 export const startObtenerLocalidades = async () => {
   try {
-    return runSafeQuery(async (db) => {
+    return await runSafeQuery(async (db) => {
       const filas = (await db.getAllAsync('SELECT * FROM localidad')) as Localidad[];
       return filas;
     });
@@ -15,7 +15,7 @@ export const startObtenerLocalidades = async () => {
 
 export const startAgregarLocalidad = async (localidad: Localidad): Promise<{ ok: boolean; message: string }> => {
   try {
-    return runSafeQuery(async (db) => {
+    return await runSafeQuery(async (db) => {
       const res = await db.runAsync('INSERT INTO localidad (nombre_loc) VALUES ($nombre_loc)', {
         $nombre_loc: localidad.nombre_loc,
       });
@@ -42,7 +42,7 @@ export const startAgregarLocalidad = async (localidad: Localidad): Promise<{ ok:
 
 export const startModificarLocalidad = async (localidad: Localidad): Promise<{ ok: boolean; message: string }> => {
   try {
-    return runSafeQuery(async (db) => {
+    return await runSafeQuery(async (db) => {
       const res = await db.runAsync('UPDATE localidad SET nombre_loc = $nombre_loc WHERE id_loc = $id_loc', {
         $nombre_loc: localidad.nombre_loc ?? '',
         $id_loc: localidad.id_loc ?? 0,
@@ -70,7 +70,7 @@ export const startModificarLocalidad = async (localidad: Localidad): Promise<{ o
 
 export const startEliminarLocalidad = async (id: number): Promise<{ ok: boolean; message: string }> => {
   try {
-    return runSafeQuery(async (db) => {
+    return await runSafeQuery(async (db) => {
       const res = await db.runAsync('DELETE FROM localidad WHERE id_loc = $id_loc', {
         $id_loc: id,
       });
