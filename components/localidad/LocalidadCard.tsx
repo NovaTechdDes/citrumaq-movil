@@ -2,7 +2,8 @@ import { Localidad } from '@/core/interface/Localidad';
 import { useMutateLocalidades } from '@/hooks';
 import { useLocalidadStore } from '@/presentation/store/useLocalidadStore';
 import { Ionicons } from '@expo/vector-icons';
-import { Alert, Pressable, Text, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
+import Buttons from '../ui/Buttons';
 
 interface Props {
   localidad: Localidad;
@@ -51,22 +52,8 @@ const LocalidadCard = ({ localidad }: Props) => {
       </View>
 
       <View className="gap-16 flex-row w-full pt-5 px-5 justify-center">
-        <Pressable onPress={handleEditarLocalidad} className="flex-row items-center gap-2 dark:bg-black dark:border dark:border-gray-500 p-2 rounded-lg dark:text-white w-[45%] justify-center">
-          <Text className="text-black dark:text-white">
-            <Ionicons name="create-outline" size={20} />
-          </Text>
-          <Text className="text-black dark:text-white">Editar</Text>
-        </Pressable>
-        <Pressable
-          onPress={handleDeleteLocalidad}
-          disabled={isPending}
-          className="flex-row items-center gap-2 dark:bg-black dark:border dark:border-gray-500 p-2 rounded-lg dark:text-white w-[45%] justify-center"
-        >
-          <Text className="text-white dark:text-red-500">
-            <Ionicons name="trash-outline" size={20} />
-          </Text>
-          <Text className="text-white dark:text-red-500">{isPending ? 'Eliminando...' : 'Eliminar'}</Text>
-        </Pressable>
+        <Buttons funcion={handleEditarLocalidad} type="edit" />
+        <Buttons funcion={handleDeleteLocalidad} type="delete" disabled={isPending} />
       </View>
     </View>
   );

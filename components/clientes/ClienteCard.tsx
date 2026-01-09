@@ -3,7 +3,8 @@ import { useMutateClientes } from '@/hooks';
 import { useColorScheme } from '@/hooks/use-color-scheme.web';
 import { useClienteStore } from '@/presentation/store/useClienteStore';
 import { Ionicons } from '@expo/vector-icons';
-import { Alert, Pressable, Text, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
+import Buttons from '../ui/Buttons';
 
 interface Props {
   cliente: Cliente;
@@ -108,23 +109,9 @@ const ClienteCard = ({ cliente }: Props) => {
         )}
 
         <View className="gap-16 flex-row w-full mt-5 border-t border-gray-500 pt-5 px-5 justify-center">
-          <Pressable onPress={handlePut} className="border w-[45%] justify-center border-gray-500 p-2 rounded-lg flex-row">
-            <Ionicons name="create-outline" size={20} color={colorScheme === 'dark' ? 'white' : 'black'} />
-            <Text className="dark:text-white">Editar</Text>
-          </Pressable>
+          <Buttons funcion={handlePut} type="edit" />
 
-          {isPending ? (
-            <View className="border border-gray-500 p-2 rounded-lg items-center justify-center">
-              <Text className="text-red-500 text-xs">Eliminando...</Text>
-            </View>
-          ) : (
-            <Pressable onPress={handleDelete} className="w-[45%] justify-center border bg-red-500 p-2 gap-5 rounded-lg flex-row dark:bg-black dark:border-red-500">
-              <Text className="dark:text-red-500 text-white">
-                <Ionicons name="trash-outline" size={20} />
-              </Text>
-              <Text className="text-white dark:text-red-500">Eliminar</Text>
-            </Pressable>
-          )}
+          <Buttons funcion={handleDelete} type="delete" disabled={isPending} />
         </View>
       </View>
     </View>
