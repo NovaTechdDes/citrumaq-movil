@@ -2,7 +2,6 @@ import { runSafeQuery } from '@/database/runSafeQuery';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Cliente } from '../interface/Cliente';
-import { Localidad } from '../interface/Localidad';
 import { Maquina } from '../interface/Maquina';
 
 const getServerUrl = async () => {
@@ -27,14 +26,11 @@ export const probarConexion = async () => {
 export const enviarDatos = async () => {
   const url = await getServerUrl();
   return runSafeQuery(async (db) => {
-    const filasLocalidades = (await db.getAllAsync('SELECT * FROM localidad')) as Localidad[];
-
     const filasClientes = (await db.getAllAsync('SELECT * FROM clientes left join localidad on clientes.localidad = localidad.id_loc')) as Cliente[];
 
     const filasMaquinas = (await db.getAllAsync('SELECT * FROM maquinas')) as Maquina[];
 
     const datos = {
-      localidades: filasLocalidades,
       clientes: filasClientes,
       maquinas: filasMaquinas,
     };

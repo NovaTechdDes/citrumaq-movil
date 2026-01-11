@@ -14,7 +14,7 @@ export const setupDatabase = async () => {
                 documento text,
                 observacion_cliente blob,
                 id_vendedor integer,
-                fecha_alta timestamp
+                fecha_alta DATE DEFAULT CURRENT_DATE
             )
         `
   );
