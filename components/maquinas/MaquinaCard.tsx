@@ -28,8 +28,7 @@ const MaquinaCard = ({ maquina }: Props) => {
         text: 'Eliminar',
         style: 'destructive',
         onPress: async () => {
-          const retorno = await eliminar(maquina.id!);
-          console.log(retorno);
+          await eliminar(maquina.id!);
         },
       },
     ]);
@@ -42,7 +41,7 @@ const MaquinaCard = ({ maquina }: Props) => {
           <Text className="text-black font-semibold text-xl dark:text-white">{descripcion}</Text>
           <Text className="text-slate-600 dark:text-white font-semibold text-lg">
             Cliente:
-            <Text className="dark:text-white  text-lg">{cliente}</Text>
+            <Text className="dark:text-white text-lg">{cliente?.trim()}</Text>
           </Text>
         </View>
 

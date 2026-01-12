@@ -59,7 +59,7 @@ const Vendedor = () => {
                 autoCorrect={false}
                 className="border flex-1 rounded-lg px-2 border-gray-300 dark:text-white "
               />
-              <Pressable onPress={handleSubmit(onSubmit)} disabled={loading} className="border border-gray-300 rounded-lg p-2 dark:bg-blue-600">
+              <Pressable onPress={handleSubmit(onSubmit)} disabled={loading} className="border border-gray-300 rounded-lg p-2 bg-blue-600">
                 <Text className="text-white text-lg">{loading ? 'Guardando...' : 'Guardar'}</Text>
               </Pressable>
             </View>

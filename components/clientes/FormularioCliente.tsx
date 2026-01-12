@@ -34,7 +34,7 @@ const FormularioCliente = () => {
   const [error, setError] = useState(false);
 
   const handleAddCliente = async (data: Cliente) => {
-    if (!data.denominacion || !data.documento) {
+    if (!data.denominacion || !data.documento || !data.localidad) {
       setError(true);
       return;
     }
@@ -118,6 +118,7 @@ const FormularioCliente = () => {
 
           <View>
             <Text className={`font-semibold mb-2 text-xl ${colorScheme === 'dark' ? 'text-white' : 'text-black'}`}>Localidad</Text>
+            {error && <Text className="text-red-500">Localidad obligatoria</Text>}
             <Controller
               name="localidad"
               control={control}

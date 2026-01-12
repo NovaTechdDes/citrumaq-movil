@@ -15,8 +15,8 @@ const Buttons = ({ type, funcion, disabled, modalAbierto }: Props) => {
     {
       return (
         <Pressable onPress={funcion} className="border gap-3 w-[45%] justify-center bg-blue-600 border-blue-600 p-2 rounded-lg flex-row">
-          <Ionicons name="create-outline" size={20} color={colorScheme === 'dark' ? 'white' : 'black'} />
-          <Text className="dark:text-white">Editar</Text>
+          <Ionicons name="create-outline" size={20} color="white" />
+          <Text className="text-white">Editar</Text>
         </Pressable>
       );
     }
@@ -26,8 +26,8 @@ const Buttons = ({ type, funcion, disabled, modalAbierto }: Props) => {
     {
       return (
         <Pressable disabled={disabled} onPress={funcion} className="border gap-3 w-[45%] justify-center bg-red-600 border-red-600 p-2 rounded-lg flex-row">
-          <Ionicons name="trash-outline" size={20} color={colorScheme === 'dark' ? 'white' : 'black'} />
-          <Text className="dark:text-white">{disabled ? 'Eliminando...' : 'Eliminar'}</Text>
+          <Ionicons name="trash-outline" size={20} color="white" />
+          <Text className="text-white">{disabled ? 'Eliminando...' : 'Eliminar'}</Text>
         </Pressable>
       );
     }
@@ -36,7 +36,7 @@ const Buttons = ({ type, funcion, disabled, modalAbierto }: Props) => {
   return (
     <Pressable onPress={funcion} className="border gap-3 w-[45%] justify-center bg-blue-600 border-blue-600 p-2 rounded-lg flex-row">
       {modalAbierto ? <Ionicons name="close-outline" size={20} color="white" /> : <Ionicons name="add-outline" size={20} color="white" />}
-      <Text className="dark:text-white">{modalAbierto ? 'Cerrar' : 'Agregar'}</Text>
+      <Text className="text-white">{modalAbierto ? 'Cerrar' : 'Agregar'}</Text>
     </Pressable>
   );
 };
