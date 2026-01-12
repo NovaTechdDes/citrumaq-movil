@@ -1,13 +1,13 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Pressable, Text, TextInput, View } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Alert, Pressable, Text, TextInput, View } from 'react-native';
 
 interface CodigoVendedor {
   vendedor: number;
 }
 
-const STORAGE_KEY = "vendedor";
+const STORAGE_KEY = 'vendedor';
 
 const Vendedor = () => {
   const [loading, setLoading] = useState(false);
@@ -21,9 +21,9 @@ const Vendedor = () => {
     (async () => {
       try {
         const saved = await AsyncStorage.getItem(STORAGE_KEY);
-        if (saved) setValue("vendedor", parseInt(saved));
+        if (saved) setValue('vendedor', parseInt(saved));
       } catch (error) {
-        console.warn("Error al leer el Vendedor Guardado", error);
+        console.warn('Error al leer el Vendedor Guardado', error);
       }
     })();
   }, [setValue]);
@@ -32,8 +32,9 @@ const Vendedor = () => {
     try {
       setLoading(true);
       await AsyncStorage.setItem(STORAGE_KEY, data.vendedor.toString());
+      Alert.alert('Codigo de Vendedor Guardado');
     } catch (error) {
-      console.error("Error al guardar el vendedor:", error);
+      console.error('Error al guardar el vendedor:', error);
     }
     setLoading(false);
   };
@@ -58,14 +59,8 @@ const Vendedor = () => {
                 autoCorrect={false}
                 className="border flex-1 rounded-lg px-2 border-gray-300 dark:text-white "
               />
-              <Pressable
-                onPress={handleSubmit(onSubmit)}
-                disabled={loading}
-                className="border border-gray-300 rounded-lg p-2 dark:bg-blue-600"
-              >
-                <Text className="text-white text-lg">
-                  {loading ? "Guardando..." : "Guardar"}
-                </Text>
+              <Pressable onPress={handleSubmit(onSubmit)} disabled={loading} className="border border-gray-300 rounded-lg p-2 dark:bg-blue-600">
+                <Text className="text-white text-lg">{loading ? 'Guardando...' : 'Guardar'}</Text>
               </Pressable>
             </View>
           )}

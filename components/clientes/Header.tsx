@@ -1,5 +1,6 @@
 import { useClienteStore } from '@/presentation/store/useClienteStore';
-import { Text, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert, Text, View } from 'react-native';
 import Buttons from '../ui/Buttons';
 
 const Header = () => {
@@ -9,6 +10,13 @@ const Header = () => {
     if (modalAbierto) {
       closeModal();
     } else {
+      const vendedor = await AsyncStorage.getItem('vendedor');
+
+      if (vendedor === '0' || !vendedor) {
+        Alert.alert('Codigo Vendedor No configurado');
+        return;
+      }
+
       openModal();
     }
   };
