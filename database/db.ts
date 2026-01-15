@@ -2,8 +2,12 @@ import * as SQLite from 'expo-sqlite';
 
 let databaseInstance: SQLite.SQLiteDatabase | null = null;
 
-export const db = async () => {
+export const db = async (forceNew = false) => {
   try {
+    if (forceNew) {
+      databaseInstance = null;
+    }
+
     if (!databaseInstance) {
       databaseInstance = await SQLite.openDatabaseAsync('citrumaq.db');
     }
