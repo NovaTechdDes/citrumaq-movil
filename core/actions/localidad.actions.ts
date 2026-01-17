@@ -1,12 +1,11 @@
-import { runSafeQuery } from '@/database/runSafeQuery';
+import { getDb } from '@/database/db';
 import { Localidad } from '../interface/Localidad';
 
 export const startObtenerLocalidades = async () => {
+  const db = await getDb();
   try {
-    return await runSafeQuery(async (db) => {
-      const filas = (await db.getAllAsync('SELECT * FROM localidad')) as Localidad[];
-      return filas;
-    });
+    const filas = (await db.getAllAsync('SELECT * FROM localidad')) as Localidad[];
+    return filas;
   } catch (error) {
     console.error(error);
     return [];
@@ -14,23 +13,22 @@ export const startObtenerLocalidades = async () => {
 };
 
 export const startAgregarLocalidad = async (localidad: Localidad): Promise<{ ok: boolean; message: string }> => {
+  const db = await getDb();
   try {
-    return await runSafeQuery(async (db) => {
-      const res = await db.runAsync('INSERT INTO localidad (nombre_loc) VALUES ($nombre_loc)', {
-        $nombre_loc: localidad.nombre_loc,
-      });
-      if (res.changes > 0) {
-        return {
-          ok: true,
-          message: 'Localdiad Agregada correctamente',
-        };
-      } else {
-        return {
-          ok: false,
-          message: 'Error al agregar la localidad',
-        };
-      }
+    const res = await db.runAsync('INSERT INTO localidad (nombre_loc) VALUES ($nombre_loc)', {
+      $nombre_loc: localidad.nombre_loc,
     });
+    if (res.changes > 0) {
+      return {
+        ok: true,
+        message: 'Localdiad Agregada correctamente',
+      };
+    } else {
+      return {
+        ok: false,
+        message: 'Error al agregar la localidad',
+      };
+    }
   } catch (error: any) {
     console.error(error);
     return {
@@ -41,24 +39,23 @@ export const startAgregarLocalidad = async (localidad: Localidad): Promise<{ ok:
 };
 
 export const startModificarLocalidad = async (localidad: Localidad): Promise<{ ok: boolean; message: string }> => {
+  const db = await getDb();
   try {
-    return await runSafeQuery(async (db) => {
-      const res = await db.runAsync('UPDATE localidad SET nombre_loc = $nombre_loc WHERE id_loc = $id_loc', {
-        $nombre_loc: localidad.nombre_loc ?? '',
-        $id_loc: localidad.id_loc ?? 0,
-      });
-      if (res.changes > 0) {
-        return {
-          ok: true,
-          message: 'Localidad actualizada correctamente',
-        };
-      } else {
-        return {
-          ok: false,
-          message: 'Error al actualizar la localidad',
-        };
-      }
+    const res = await db.runAsync('UPDATE localidad SET nombre_loc = $nombre_loc WHERE id_loc = $id_loc', {
+      $nombre_loc: localidad.nombre_loc ?? '',
+      $id_loc: localidad.id_loc ?? 0,
     });
+    if (res.changes > 0) {
+      return {
+        ok: true,
+        message: 'Localidad actualizada correctamente',
+      };
+    } else {
+      return {
+        ok: false,
+        message: 'Error al actualizar la localidad',
+      };
+    }
   } catch (error: any) {
     console.error(error);
     return {
@@ -69,25 +66,25 @@ export const startModificarLocalidad = async (localidad: Localidad): Promise<{ o
 };
 
 export const startEliminarLocalidad = async (id: number): Promise<{ ok: boolean; message: string }> => {
+  const db = await getDb();
   try {
-    return await runSafeQuery(async (db) => {
-      const res = await db.runAsync('DELETE FROM localidad WHERE id_loc = $id_loc', {
-        $id_loc: id,
-      });
-      if (res.changes > 0) {
-        return {
-          ok: true,
-          message: 'Localidad eliminada correctamente',
-        };
-      } else {
-        return {
-          ok: false,
-          message: 'Error al eliminar la localidad',
-        };
-      }
+    const res = await db.runAsync('DELETE FROM localidad WHERE id_loc = $id_loc', {
+      $id_loc: id,
     });
+    if (res.changes > 0) {
+      return {
+        ok: true,
+        message: 'Localidad eliminada correctamente',
+      };
+    } else {
+      return {
+        ok: false,
+        message: 'Error al eliminar la localidad',
+      };
+    }
   } catch (error: any) {
     console.error(error);
+    console.log('a');
 
     const errorMessage = error.message || '';
 

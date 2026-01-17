@@ -6,7 +6,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import '../global.css';
 
-import { db } from '@/database/db';
+import { getDb } from '@/database/db';
 import { setupDatabase } from '@/database/migrations';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useEffect } from 'react';
@@ -23,10 +23,12 @@ export default function RootLayout() {
 
   useEffect(() => {
     setupDatabase();
+  }, []);
 
+  useEffect(() => {
     const sub = AppState.addEventListener('change', (state) => {
       if (state === 'active') {
-        db(true);
+        getDb();
       }
     });
 

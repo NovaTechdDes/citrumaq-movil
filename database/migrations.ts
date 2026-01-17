@@ -1,7 +1,7 @@
-import { db } from './db';
+import { getDb } from './db';
 
 export const setupDatabase = async () => {
-  const conexion = await db();
+  const conexion = await getDb();
   await conexion.execAsync('PRAGMA foreign_keys = ON');
 
   // Primero creamos localidad porque clientes depende de ella
