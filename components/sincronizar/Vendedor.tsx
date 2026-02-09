@@ -1,7 +1,8 @@
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Pressable, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, Text, TextInput, View } from 'react-native';
 
 interface CodigoVendedor {
   vendedor: number;
@@ -32,40 +33,52 @@ const Vendedor = () => {
     try {
       setLoading(true);
       await AsyncStorage.setItem(STORAGE_KEY, data.vendedor.toString());
-      Alert.alert('Codigo de Vendedor Guardado');
+      Alert.alert('Éxito', 'Identificación de terminal guardada correctamente');
     } catch (error) {
       console.error('Error al guardar el vendedor:', error);
+      Alert.alert('Error', 'No se pudo guardar la identificación');
     }
     setLoading(false);
   };
 
   return (
-    <View className="border my-2 border-gray-500 rounded-lg py-2 dark:bg-slate-700 px-5 mx-5">
-      <Text className="text-2xl font-semibold dark:text-white">Vendedor</Text>
+    <View className="mx-6 my-3 p-5 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+      <View className="flex-row items-center mb-4">
+        <View className="w-10 h-10 bg-blue-50 dark:bg-blue-900/30 rounded-full items-center justify-center mr-3">
+          <Ionicons name="person-outline" size={20} color="#3b82f6" />
+        </View>
+        <Text className="text-xl font-bold text-slate-900 dark:text-white">ID de Terminal</Text>
+      </View>
 
-      <View>
-        <Controller
-          control={control}
-          name="vendedor"
-          render={({ field: { onChange, value, onBlur } }) => (
-            <View className="flex-row items-center gap-2">
+      <Controller
+        control={control}
+        name="vendedor"
+        render={({ field: { onChange, value, onBlur } }) => (
+          <View className="flex-row items-center">
+            <View className="flex-1 mr-2">
               <TextInput
-                value={value?.toString()}
+                value={(value || 0) > 0 ? value!.toString() : ''}
                 onChangeText={(text) => onChange(text)}
                 onBlur={onBlur}
-                placeholder="Vendedor"
+                placeholder="000"
                 keyboardType="numeric"
                 autoCapitalize="none"
                 autoCorrect={false}
-                className="border flex-1 rounded-lg px-2 border-gray-300 dark:text-white "
+                placeholderTextColor="#94a3b8"
+                className="bg-slate-50 dark:bg-slate-800 h-12 px-4 rounded-xl text-slate-900 dark:text-white font-medium border border-slate-200 dark:border-slate-700 focus:border-blue-500"
               />
-              <Pressable onPress={handleSubmit(onSubmit)} disabled={loading} className="border border-gray-300 rounded-lg p-2 bg-blue-600">
-                <Text className="text-white text-lg">{loading ? 'Guardando...' : 'Guardar'}</Text>
-              </Pressable>
             </View>
-          )}
-        />
-      </View>
+            <Pressable
+              onPress={handleSubmit(onSubmit)}
+              disabled={loading}
+              className={`h-12 px-6 rounded-xl items-center justify-center ${loading ? 'bg-slate-200 dark:bg-slate-700' : 'bg-blue-600 active:bg-blue-700'}`}
+            >
+              {loading ? <ActivityIndicator color="#ffffff" size="small" /> : <Text className="text-white font-bold text-base">Guardar</Text>}
+            </Pressable>
+          </View>
+        )}
+      />
+      <Text className="mt-3 text-slate-400 dark:text-slate-500 text-xs italic">* Este código identifica tus operaciones en el servidor central.</Text>
     </View>
   );
 };

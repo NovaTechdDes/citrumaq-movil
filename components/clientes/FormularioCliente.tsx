@@ -1,14 +1,13 @@
 import { Cliente } from '@/core/interface/Cliente';
 import { useMutateClientes } from '@/hooks';
 import { useLocalidades } from '@/hooks/localidades/useLocalidades';
-import { useColorScheme } from '@/hooks/use-color-scheme.web';
 import { useClienteStore } from '@/presentation/store/useClienteStore';
+import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
-import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Pressable, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-//radmin vpn
+
 const initialState: Cliente = {
   domicilio: '',
   documento: '',
@@ -20,41 +19,42 @@ const initialState: Cliente = {
 
 const FormularioCliente = () => {
   const { closeModal, clienteSeleccionado } = useClienteStore();
-  const colorScheme = useColorScheme();
-
-  const { reset, control, handleSubmit } = useForm({
+  const {
+    reset,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: clienteSeleccionado ?? initialState,
   });
   const { agregarCliente, modificarCliente } = useMutateClientes();
-
   const { data: localidades } = useLocalidades();
-  const { mutateAsync: agregar, isPending } = agregarCliente;
+  const { mutateAsync: agregar, isPending: isPendingAgregar } = agregarCliente;
   const { mutateAsync: modificar, isPending: isPendingModificar } = modificarCliente;
 
-  const [error, setError] = useState(false);
+  const isPending = isPendingAgregar || isPendingModificar;
 
-  const handleAddCliente = async (data: Cliente) => {
-    if (!data.denominacion || !data.documento || !data.localidad) {
-      setError(true);
-      return;
-    }
-
-    const { ok, message } = await agregar(data);
-    if (ok) {
-      reset();
-      closeModal();
-    } else {
-      Alert.alert('Error', message);
-    }
-  };
-
-  const handleUpdateCliente = async (data: Cliente) => {
-    const { ok, message } = await modificar(data);
-    if (ok) {
-      reset();
-      closeModal();
-    } else {
-      Alert.alert('Error', message);
+  const onSubmit = async (data: Cliente) => {
+    try {
+      if (clienteSeleccionado) {
+        const { ok, message } = await modificar(data);
+        if (ok) {
+          reset();
+          closeModal();
+        } else {
+          Alert.alert('Error al Modificar', message);
+        }
+      } else {
+        const { ok, message } = await agregar(data);
+        if (ok) {
+          reset();
+          closeModal();
+        } else {
+          Alert.alert('Error al Registrar', message);
+        }
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -63,105 +63,154 @@ const FormularioCliente = () => {
     closeModal();
   };
 
+  console.log(clienteSeleccionado);
+
   return (
-    <KeyboardAwareScrollView extraScrollHeight={2} enableOnAndroid={true} contentContainerStyle={{ paddingBottom: 120 }}>
-      <View className="border p-5 border-gray-300 rounded-lg">
-        <Text className="font-semibold text-xl mb-2">{clienteSeleccionado ? 'Modifica Cliente' : 'Nuevo Cliente'}</Text>
-        <View className="gap-5">
-          <View>
-            <Text className={`font-semibold mb-2 text-xl ${colorScheme === 'dark' ? 'text-white' : 'text-black'}`}>Nombre *</Text>
-            {error && <Text className="text-red-500">Texto obligatorio</Text>}
-            <Controller
-              name="denominacion"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <TextInput
-                  className={`border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400 ${colorScheme === 'dark' ? 'text-white' : 'text-black'}`}
-                  value={value}
-                  onChangeText={onChange}
-                  placeholder="Nombre del cliente"
-                />
-              )}
-            />
-          </View>
-          <View>
-            <Text className={`font-semibold mb-2 text-xl ${colorScheme === 'dark' ? 'text-white' : 'text-black'}`}>Documento *</Text>
-            {error && <Text className="text-red-500">Texto obligatorio</Text>}
-            <Controller
-              name="documento"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <TextInput
-                  className={`border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400 ${colorScheme === 'dark' ? 'text-white' : 'text-black'}`}
-                  value={value}
-                  onChangeText={onChange}
-                  placeholder="00000000"
-                />
-              )}
-            />
-          </View>
-          <View>
-            <Text className={`font-semibold mb-2 text-xl ${colorScheme === 'dark' ? 'text-white' : 'text-black'}`}>Domicilio</Text>
-            <Controller
-              name="domicilio"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <TextInput
-                  className={`border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400 ${colorScheme === 'dark' ? 'text-white' : 'text-black'}`}
-                  placeholder="Av Siempre Viva 123"
-                  value={value}
-                  onChangeText={onChange}
-                />
-              )}
-            />
+    <KeyboardAwareScrollView extraScrollHeight={20} enableOnAndroid={true} contentContainerStyle={{ flexGrow: 1 }}>
+      <View className="flex-1 px-6 pt-4 pb-20">
+        <View className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-xl border border-slate-100 dark:border-slate-800">
+          <View className="flex-row items-center mb-6">
+            <View className="w-10 h-10 bg-indigo-50 dark:bg-indigo-900/30 rounded-full items-center justify-center mr-3">
+              <Ionicons name={clienteSeleccionado ? 'person-add' : 'person'} size={20} color="#6366f1" />
+            </View>
+            <Text className="text-xl font-bold text-slate-900 dark:text-white">{clienteSeleccionado ? 'Actualizar Cliente' : 'Nuevo Cliente'}</Text>
           </View>
 
-          <View>
-            <Text className={`font-semibold mb-2 text-xl ${colorScheme === 'dark' ? 'text-white' : 'text-black'}`}>Localidad</Text>
-            {error && <Text className="text-red-500">Localidad obligatoria</Text>}
-            <Controller
-              name="localidad"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Picker style={pickerStyles.base} selectedValue={value || ''} dropdownIconColor="#333" onValueChange={onChange}>
-                  <Picker.Item label="Seleccionar Localidad" value="" />
-                  {localidades?.map((localidad) => (
-                    <Picker.Item key={localidad.id_loc} color={pickerStyles.item.color} value={localidad.id_loc} label={`${localidad.nombre_loc}`} />
-                  ))}
-                </Picker>
-              )}
-            />
-          </View>
-
-          <View>
-            <Text className={`font-semibold mb-2 text-xl ${colorScheme === 'dark' ? 'text-white' : 'text-black'}`}>Telefono</Text>
-            <Controller
-              name="telefono"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <TextInput
-                  className={`border border-gray-500 rounded-lg text-xl pl-5 placeholder:text-gray-400 ${colorScheme === 'dark' ? 'text-white' : 'text-black'}`}
-                  placeholder="+3456445089"
-                  value={value}
-                  onChangeText={onChange}
+          <View className="gap-6">
+            {/* Sección: Identidad */}
+            <View>
+              <Text className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2 ml-1">Identificación Fiscal *</Text>
+              <View className="gap-4">
+                <Controller
+                  name="denominacion"
+                  control={control}
+                  rules={{ required: 'La denominación es obligatoria' }}
+                  render={({ field: { onChange, value } }) => (
+                    <View>
+                      <TextInput
+                        className={`bg-slate-50 dark:bg-slate-800 h-14 px-5 rounded-2xl text-slate-900 dark:text-white font-medium border ${errors.denominacion ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'} focus:border-indigo-500 text-lg`}
+                        value={value}
+                        onChangeText={onChange}
+                        placeholder="Nombre o Razón Social"
+                        placeholderTextColor="#94a3b8"
+                      />
+                      {errors.denominacion && <Text className="text-red-500 text-xs mt-1 ml-1">{errors.denominacion.message}</Text>}
+                    </View>
+                  )}
                 />
-              )}
-            />
-          </View>
+                <Controller
+                  name="documento"
+                  control={control}
+                  rules={{ required: 'El documento es obligatorio' }}
+                  render={({ field: { onChange, value } }) => (
+                    <View>
+                      <TextInput
+                        className={`bg-slate-50 dark:bg-slate-800 h-14 px-5 rounded-2xl text-slate-900 dark:text-white font-medium border ${errors.documento ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'} focus:border-indigo-500 text-lg`}
+                        value={value}
+                        onChangeText={onChange}
+                        placeholder="CUIT / CUIL / DNI"
+                        placeholderTextColor="#94a3b8"
+                        keyboardType="numeric"
+                      />
+                      {errors.documento && <Text className="text-red-500 text-xs mt-1 ml-1">{errors.documento.message}</Text>}
+                    </View>
+                  )}
+                />
+              </View>
+            </View>
 
-          <View className="flex-row justify-center gap-5 w-full">
-            {clienteSeleccionado ? (
-              <Pressable onPress={handleSubmit(handleUpdateCliente)} disabled={isPendingModificar} className="border border-gray-300 px-5 bg-black py-2 rounded-lg">
-                <Text className="text-xl font-semibold text-white">{isPendingModificar ? 'Modificando...' : 'Modificar Cliente'}</Text>
+            {/* Sección: Ubicación y Contacto */}
+            <View>
+              <Text className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2 ml-1">Ubicación y Contacto *</Text>
+              <View className="gap-4">
+                <Controller
+                  name="localidad"
+                  control={control}
+                  rules={{ required: 'Seleccionar una localidad es obligatorio' }}
+                  render={({ field: { onChange, value } }) => (
+                    <View>
+                      <View
+                        className={`bg-slate-50 dark:bg-slate-800 rounded-2xl border ${errors.localidad ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'} h-14 justify-center px-2 overflow-hidden`}
+                      >
+                        <Picker selectedValue={value || ''} dropdownIconColor="#94a3b8" onValueChange={(itemValue) => onChange(itemValue)} style={{ color: value ? '#1e293b' : '#94a3b8' }}>
+                          <Picker.Item label="Seleccionar Localidad" value="" />
+                          {localidades?.map((loc) => (
+                            <Picker.Item key={loc.id_loc} label={loc.nombre_loc} value={loc.id_loc} />
+                          ))}
+                        </Picker>
+                      </View>
+                      {errors.localidad && <Text className="text-red-500 text-xs mt-1 ml-1">{errors.localidad.message}</Text>}
+                    </View>
+                  )}
+                />
+                <Controller
+                  name="domicilio"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextInput
+                      className="bg-slate-50 dark:bg-slate-800 h-14 px-5 rounded-2xl text-slate-900 dark:text-white font-medium border border-slate-200 dark:border-slate-700 focus:border-indigo-500 text-lg"
+                      placeholder="Calle, Altura, Piso"
+                      placeholderTextColor="#94a3b8"
+                      value={value}
+                      onChangeText={onChange}
+                    />
+                  )}
+                />
+                <Controller
+                  name="telefono"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextInput
+                      className="bg-slate-50 dark:bg-slate-800 h-14 px-5 rounded-2xl text-slate-900 dark:text-white font-medium border border-slate-200 dark:border-slate-700 focus:border-indigo-500 text-lg"
+                      placeholder="Teléfono / WhatsApp"
+                      placeholderTextColor="#94a3b8"
+                      value={value}
+                      onChangeText={onChange}
+                      keyboardType="phone-pad"
+                    />
+                  )}
+                />
+              </View>
+            </View>
+
+            {/* Sección: Notas */}
+            <View>
+              <Text className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2 ml-1">Información Adicional</Text>
+              <Controller
+                name="observacion_cliente"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    className="bg-slate-50 dark:bg-slate-800 p-4 rounded-2xl text-slate-900 dark:text-white font-medium border border-slate-200 dark:border-slate-700 focus:border-indigo-500 min-h-24"
+                    placeholder="Detalles sobre entregas, facturación o contacto secundario..."
+                    placeholderTextColor="#94a3b8"
+                    value={value}
+                    onChangeText={onChange}
+                    multiline
+                    textAlignVertical="top"
+                  />
+                )}
+              />
+            </View>
+
+            {/* Botones de Acción */}
+            <View className="flex-row gap-3 mt-4">
+              <Pressable className="flex-1 h-14 bg-slate-100 dark:bg-slate-800 rounded-2xl items-center justify-center active:bg-slate-200 dark:active:bg-slate-700" onPress={cerrarModal}>
+                <Text className="text-slate-700 dark:text-slate-300 font-bold text-lg">Cancelar</Text>
               </Pressable>
-            ) : (
-              <Pressable onPress={handleSubmit(handleAddCliente)} disabled={isPending} className="border border-gray-300 px-5 bg-black py-2 rounded-lg dark:bg-blue-500  dark:border-blue-500">
-                <Text className="text-xl font-semibold text-white dark:text-white">{isPending ? 'Agregando...' : 'Agregar Cliente'}</Text>
+
+              <Pressable
+                onPress={handleSubmit(onSubmit)}
+                disabled={isPending}
+                className={`flex-[2] h-14 rounded-2xl items-center justify-center shadow-lg ${isPending ? 'bg-slate-200 dark:bg-slate-700' : 'bg-indigo-600 active:bg-indigo-700 shadow-indigo-200 dark:shadow-none'}`}
+              >
+                {isPending ? (
+                  <ActivityIndicator color="#ffffff" size="small" />
+                ) : (
+                  <Text className="text-white font-extrabold text-lg uppercase">{clienteSeleccionado ? 'Guardar Cambios' : 'Registrar Cliente'}</Text>
+                )}
               </Pressable>
-            )}
-            <Pressable onPress={cerrarModal} className="border border-gray-300 px-5 py-2 rounded-lg dark:border-gray-500">
-              <Text className="text-xl font-semibold dark:text-white">Cancelar</Text>
-            </Pressable>
+            </View>
           </View>
         </View>
       </View>
@@ -183,7 +232,7 @@ export const pickerStyles = {
     marginBottom: 12,
   },
   item: {
-    color: '#white',
+    color: '#000',
     backgroundColor: '#fff',
   },
   placeholder: {

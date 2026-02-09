@@ -12,9 +12,13 @@ const Header = () => {
       openModal();
     }
   };
+
   return (
-    <View className="flex-row justify-between items-center p-2 ">
-      <Text className="text-2xl font-semibold dark:text-white text-black">Mis Maquinas</Text>
+    <View className="flex-row justify-between items-center px-6 py-4">
+      <View>
+        <Text className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Inventario</Text>
+        <Text className="text-slate-500 dark:text-slate-400 text-sm">Maquinaria y Equipos</Text>
+      </View>
 
       <Buttons modalAbierto={modalAbierto} funcion={handleModal} type="add" />
     </View>

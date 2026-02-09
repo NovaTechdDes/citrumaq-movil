@@ -13,16 +13,20 @@ const Header = () => {
       const vendedor = await AsyncStorage.getItem('vendedor');
 
       if (vendedor === '0' || !vendedor) {
-        Alert.alert('Codigo Vendedor No configurado');
+        Alert.alert('Acceso Restringido', 'El Código de Vendedor no ha sido configurado. Por favor, realiza la configuración inicial.');
         return;
       }
 
       openModal();
     }
   };
+
   return (
-    <View className={`flex-row justify-between items-center p-2`}>
-      <Text className={`text-2xl font-semibold dark:text-white`}>Mis Clientes</Text>
+    <View className="flex-row justify-between items-center px-6 py-4">
+      <View>
+        <Text className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Cartera</Text>
+        <Text className="text-slate-500 dark:text-slate-400 text-sm">Gestión de Clientes</Text>
+      </View>
 
       <Buttons modalAbierto={modalAbierto} funcion={handleModal} type="add" />
     </View>
