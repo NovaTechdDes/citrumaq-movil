@@ -4,6 +4,7 @@ import { useLocalidades } from '@/hooks/localidades/useLocalidades';
 import { useClienteStore } from '@/presentation/store/useClienteStore';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, Alert, Pressable, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -63,7 +64,13 @@ const FormularioCliente = () => {
     closeModal();
   };
 
-  console.log(clienteSeleccionado);
+  useEffect(() => {
+    if (clienteSeleccionado) {
+      reset(clienteSeleccionado);
+    } else {
+      reset(initialState);
+    }
+  }, [clienteSeleccionado, reset]);
 
   return (
     <KeyboardAwareScrollView extraScrollHeight={20} enableOnAndroid={true} contentContainerStyle={{ flexGrow: 1 }}>
@@ -135,7 +142,7 @@ const FormularioCliente = () => {
                         <Picker selectedValue={value || ''} dropdownIconColor="#94a3b8" onValueChange={(itemValue) => onChange(itemValue)} style={{ color: value ? '#1e293b' : '#94a3b8' }}>
                           <Picker.Item label="Seleccionar Localidad" value="" />
                           {localidades?.map((loc) => (
-                            <Picker.Item key={loc.id_loc} label={loc.nombre_loc} value={loc.id_loc} />
+                            <Picker.Item key={loc.id_loc} label={loc.nombre_loc} value={String(loc.id_loc)} />
                           ))}
                         </Picker>
                       </View>

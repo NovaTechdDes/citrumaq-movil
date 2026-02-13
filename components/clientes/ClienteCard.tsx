@@ -92,7 +92,7 @@ const ClienteCard = ({ cliente }: Props) => {
       {/* Botón de Perfil Inferior */}
       <Pressable
         onPress={handlePut}
-        className="h-14 bg-white dark:bg-slate-900 items-center justify-center flex-row border-t border-slate-50 dark:border-slate-800 active:bg-slate-50 dark:active:bg-slate-800/50"
+        className="h-14 bg-white dark:bg-slate-900 items-center justify-center flex-row border-t border-slate-200 dark:border-slate-800 active:bg-slate-50 dark:active:bg-slate-800/50"
       >
         <Ionicons name="create-outline" size={18} color="#64748b" />
         <Text className="text-slate-600 dark:text-slate-400 font-bold ml-2">EDITAR INFORMACIÓN</Text>
