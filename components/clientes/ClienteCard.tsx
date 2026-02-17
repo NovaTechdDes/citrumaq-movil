@@ -14,7 +14,7 @@ const ClienteCard = ({ cliente }: Props) => {
   const { eliminarCliente } = useMutateClientes();
   const { mutateAsync: eliminar, isPending } = eliminarCliente;
 
-  if (buscador && !denominacion.toUpperCase().includes(buscador) && !telefono.toUpperCase().includes(buscador)) {
+  if (buscador && !denominacion.toUpperCase().includes(buscador) && !telefono.toUpperCase().includes(buscador) && !nombre_loc?.toUpperCase().includes(buscador)) {
     return null;
   }
 

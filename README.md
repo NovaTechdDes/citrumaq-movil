@@ -9,7 +9,7 @@
 
 ## Instalacion De un nuevo Build
 
-1. eas build --platform android --profile preview
+1.
 
 ## Actualiazacion
 

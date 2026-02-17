@@ -84,7 +84,6 @@ export const startEliminarLocalidad = async (id: number): Promise<{ ok: boolean;
     }
   } catch (error: any) {
     console.error(error);
-    console.log('a');
 
     const errorMessage = error.message || '';
 
