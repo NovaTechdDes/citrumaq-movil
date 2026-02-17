@@ -39,7 +39,7 @@ const FormularioCliente = () => {
   const onSubmit = async (data: Cliente) => {
     try {
       if (clienteSeleccionado) {
-        const { ok, message } = await modificar(data);
+        const { ok, message } = await modificar({ ...data, denominacion: data.denominacion.trim() });
         if (ok) {
           reset();
           closeModal();
@@ -47,7 +47,7 @@ const FormularioCliente = () => {
           Alert.alert('Error al Modificar', message);
         }
       } else {
-        const { ok, message } = await agregar(data);
+        const { ok, message } = await agregar({ ...data, denominacion: data.denominacion.trim() });
         if (ok) {
           reset();
           closeModal();

@@ -12,6 +12,7 @@ interface Props {
 }
 
 const ListaClientes = ({ id, denominacion, nombre_loc, telefono, closeModal, setSelectCliente, onChange }: Props) => {
+  console.log(denominacion);
   return (
     <Pressable
       onPress={() => {
@@ -27,7 +28,7 @@ const ListaClientes = ({ id, denominacion, nombre_loc, telefono, closeModal, set
 
       <View className="flex-1">
         <Text className="text-lg font-bold text-slate-900 dark:text-white" numberOfLines={1}>
-          {denominacion}
+          {denominacion.trim()}
         </Text>
         <View className="flex-row items-center mt-1">
           <Text className="text-slate-500 dark:text-slate-400 text-xs font-medium">{nombre_loc || 'Sin Localidad'}</Text>
